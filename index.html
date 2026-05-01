@@ -8,22 +8,29 @@
   'use strict';
 
   var TRIAL_KEY    = 'mrgreen_trial';
-  var PAID_KEY     = 'mrgreen_paid';
+  var SESSION_KEY  = 'mrgreen_session'; // chave usada pelo paywall ao fazer login
   var TRIAL_MS     = 24 * 60 * 60 * 1000; // 24 horas
 
   function getTrialData() {
     try { return JSON.parse(localStorage.getItem(TRIAL_KEY)); } catch(e) { return null; }
   }
-  function getPaidData() {
-    try { return JSON.parse(localStorage.getItem(PAID_KEY)); } catch(e) { return null; }
+
+  // Verifica sessão salva pelo paywall (chave mrgreen_session)
+  function getSessionData() {
+    try { return JSON.parse(localStorage.getItem(SESSION_KEY)); } catch(e) { return null; }
   }
-  function hasValidPaid() {
-    var d = getPaidData();
-    if (!d || !d.plan) return false;
+
+  function hasValidSession() {
+    var d = getSessionData();
+    if (!d || !d.plan || !d.email) return false;
     if (d.plan === 'lifetime') return true;
-    if (d.plan === 'monthly') return Date.now() < d.activated + 30 * 24 * 60 * 60 * 1000;
+    if (d.plan === 'monthly') {
+      if (d.expires_at) return new Date(d.expires_at) > new Date();
+      return Date.now() < d.checked + 30 * 24 * 60 * 60 * 1000;
+    }
     return false;
   }
+
   function startTrial() {
     localStorage.setItem(TRIAL_KEY, JSON.stringify({ start: Date.now(), version: 1 }));
   }
@@ -40,8 +47,8 @@
     return String(h).padStart(2,'0') + 'h ' + String(m).padStart(2,'0') + 'm ' + String(s).padStart(2,'0') + 's';
   }
 
-  // Pago? Libera.
-  if (hasValidPaid()) return;
+  // Usuario com plano ativo? Libera sem banner.
+  if (hasValidSession()) return;
 
   var trial = getTrialData();
 
@@ -66,22 +73,22 @@
     var inject = function() {
       var styles = '<style id="mrgreen-trial-style">' +
         '#mrgreen-trial-bar {' +
-          'position:fixed;bottom:0;left:0;right:0;z-index:9999;' +
+          'position:fixed;top:0;left:0;right:0;z-index:9999;' +
           'background:linear-gradient(135deg,#141417,#1a1a1f);' +
-          'border-top:1px solid rgba(245,158,11,.4);' +
-          'padding:14px 20px;display:flex;align-items:center;' +
-          'justify-content:space-between;flex-wrap:wrap;gap:12px;' +
+          'border-bottom:1px solid rgba(245,158,11,.4);' +
+          'padding:10px 16px;display:flex;align-items:center;' +
+          'justify-content:space-between;flex-wrap:wrap;gap:10px;' +
           'font-family:system-ui,sans-serif;' +
-          'box-shadow:0 -8px 32px rgba(0,0,0,.5);' +
+          'box-shadow:0 4px 24px rgba(0,0,0,.5);' +
         '}' +
-        '#mrgreen-trial-bar .tbar-left{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}' +
-        '#mrgreen-trial-bar .tbar-icon{font-size:22px;}' +
-        '#mrgreen-trial-bar .tbar-text{color:#D1D5DB;font-size:.9rem;line-height:1.4;}' +
+        '#mrgreen-trial-bar .tbar-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}' +
+        '#mrgreen-trial-bar .tbar-icon{font-size:18px;}' +
+        '#mrgreen-trial-bar .tbar-text{color:#D1D5DB;font-size:.82rem;line-height:1.4;}' +
         '#mrgreen-trial-bar .tbar-text strong{color:#F59E0B;}' +
-        '#mrgreen-trial-bar .tbar-countdown{font-weight:700;color:#F59E0B;font-variant-numeric:tabular-nums;font-size:1rem;}' +
-        '#mrgreen-trial-bar .tbar-btn{background:linear-gradient(135deg,#22C55E,#16A34A);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-weight:600;font-size:.9rem;cursor:pointer;white-space:nowrap;font-family:inherit;}' +
+        '#mrgreen-trial-bar .tbar-countdown{font-weight:700;color:#F59E0B;font-variant-numeric:tabular-nums;font-size:.95rem;}' +
+        '#mrgreen-trial-bar .tbar-btn{background:linear-gradient(135deg,#22C55E,#16A34A);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-weight:600;font-size:.82rem;cursor:pointer;white-space:nowrap;font-family:inherit;}' +
         '#mrgreen-trial-bar .tbar-btn:hover{opacity:.9;}' +
-        'body{padding-bottom:80px!important;}' +
+        'body{padding-top:56px!important;}' +
         '</style>';
 
       document.head.insertAdjacentHTML('beforeend', styles);
@@ -89,15 +96,15 @@
       var bar = document.createElement('div');
       bar.id = 'mrgreen-trial-bar';
       var msg = isFirst
-        ? '<strong>Bem-vindo! Seu trial gratuito de 24h começou agora.</strong> Aproveite por: '
-        : 'Seu <strong>período gratuito</strong> encerra em: ';
+        ? '<strong>Bem-vindo! Seu trial gratuito de 24h comeou agora.</strong> Aproveite por: '
+        : 'Seu <strong>periodo gratuito</strong> encerra em: ';
       bar.innerHTML = '<div class="tbar-left">' +
         '<span class="tbar-icon">\u23F3</span>' +
         '<div class="tbar-text">' + msg +
         '<span class="tbar-countdown" id="tbar-cd">' + formatMs(remaining) + '</span>' +
         '</div></div>' +
-        '<button class="tbar-btn" onclick="window.location.href=\'paywall.html\'">\uD83D\uDD13 Assinar e continuar</button>';
-      document.body.appendChild(bar);
+        '<button class="tbar-btn" onclick="window.location.href=\'paywall.html\'">&#x1F513; Assinar e continuar</button>';
+      document.body.prepend(bar);
 
       var ms = remaining;
       var tick = setInterval(function() {

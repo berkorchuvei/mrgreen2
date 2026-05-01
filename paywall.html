@@ -250,7 +250,7 @@ async function doLogin() {
     if (!user) { msg.style.color='#EF4444'; msg.textContent='E-mail nao encontrado. Verifique ou aguarde a ativacao.'; btn.textContent='Verificar acesso'; btn.disabled=false; return; }
     var active = user.plan==='lifetime' || (user.plan==='monthly' && user.expires_at && new Date(user.expires_at)>new Date());
     if (!active) { msg.style.color='#EF4444'; msg.textContent='Plano expirado. Renove para continuar.'; btn.textContent='Verificar acesso'; btn.disabled=false; return; }
-    localStorage.setItem(SESSION_KEY, JSON.stringify({email:user.email,plan:user.plan,checked:Date.now()}));
+    localStorage.setItem(SESSION_KEY, JSON.stringify({email:user.email,plan:user.plan,checked:Date.now(),expires_at:user.expires_at||null}));
     msg.style.color='#22C55E'; msg.textContent='Acesso liberado! Redirecionando...';
     setTimeout(function(){ window.location.href='index.html'; }, 1200);
   } catch(e) {
