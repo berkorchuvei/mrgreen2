@@ -47,24 +47,8 @@
     return String(h).padStart(2,'0') + 'h ' + String(m).padStart(2,'0') + 'm ' + String(s).padStart(2,'0') + 's';
   }
 
-  // Plano vitalício: libera sem banner.
-  // Plano mensal: mostra banner com dias restantes (ou redireciona se expirou).
-  // Sem sessão: segue para lógica de trial.
-  var _sess = getSessionData();
-  if (_sess && _sess.plan && _sess.email) {
-    if (_sess.plan === 'lifetime') return;
-    if (_sess.plan === 'monthly') {
-      var _exp = _sess.expires_at ? new Date(_sess.expires_at) : new Date(_sess.checked + 30*24*60*60*1000);
-      if (_exp <= new Date()) {
-        localStorage.removeItem('mrgreen_session');
-        window.location.href = 'paywall.html';
-        return;
-      }
-      var _days = Math.ceil((_exp - new Date()) / (24*60*60*1000));
-      injectPaidBanner(_days);
-      return;
-    }
-  }
+  // Usuario com plano ativo? Libera sem banner.
+  if (hasValidSession()) return;
 
   var trial = getTrialData();
 
@@ -84,40 +68,6 @@
 
   // Trial ativo — banner com countdown
   injectTrialBanner(getRemaining(trial), false);
-
-  function injectPaidBanner(daysLeft) {
-    var inject = function() {
-      var cor = daysLeft <= 5 ? '#EF4444' : '#22C55E';
-      var borda = daysLeft <= 5 ? 'rgba(239,68,68,.4)' : 'rgba(34,197,94,.3)';
-      var icone = daysLeft <= 5 ? '&#x26A0;&#xFE0F;' : '&#x2705;';
-      var estilos = '<style id="mrgreen-paid-style">' +
-        '#mrgreen-paid-bar{position:fixed;top:0;left:0;right:0;z-index:9999;' +
-        'background:linear-gradient(135deg,#141417,#1a1a1f);' +
-        'border-bottom:1px solid '+borda+';padding:10px 16px;' +
-        'display:flex;align-items:center;justify-content:space-between;' +
-        'flex-wrap:wrap;gap:10px;font-family:system-ui,sans-serif;' +
-        'box-shadow:0 4px 24px rgba(0,0,0,.5);}' +
-        '#mrgreen-paid-bar .pb-left{display:flex;align-items:center;gap:10px;}' +
-        '#mrgreen-paid-bar .pb-txt{color:#D1D5DB;font-size:.82rem;}' +
-        '#mrgreen-paid-bar .pb-dias{font-weight:700;color:'+cor+';}' +
-        '#mrgreen-paid-bar .pb-btn{background:transparent;border:1px solid '+cor+';' +
-        'color:'+cor+';border-radius:8px;padding:6px 14px;font-weight:600;' +
-        'font-size:.78rem;cursor:pointer;white-space:nowrap;font-family:inherit;}' +
-        'body{padding-top:52px!important;}' +
-        '</style>';
-      document.head.insertAdjacentHTML('beforeend', estilos);
-      var bar = document.createElement('div');
-      bar.id = 'mrgreen-paid-bar';
-      var msg = daysLeft <= 1
-        ? 'Seu plano mensal expira <span class="pb-dias">hoje</span>! Renove para continuar.'
-        : 'Plano mensal ativo — <span class="pb-dias">'+daysLeft+' dias restantes</span>';
-      bar.innerHTML = '<div class="pb-left"><span>'+icone+'</span><span class="pb-txt">'+msg+'</span></div>' +
-        '<button class="pb-btn" onclick="window.location.href='paywall.html'">Renovar plano</button>';
-      document.body.prepend(bar);
-    };
-    if (document.readyState === 'complete') { inject(); }
-    else { window.addEventListener('load', inject); }
-  }
 
   function injectTrialBanner(remaining, isFirst) {
     var inject = function() {
