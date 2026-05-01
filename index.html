@@ -116,11 +116,12 @@
       }, 1000);
     };
 
-    // Sempre aguarda o DOM para garantir que document.body existe
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', inject);
-    } else {
+    // Aguarda o React/Next.js terminar de hidratar o DOM antes de injetar
+    // (sem isso o React remove o banner durante a hidratação)
+    if (document.readyState === 'complete') {
       inject();
+    } else {
+      window.addEventListener('load', inject);
     }
   }
 
