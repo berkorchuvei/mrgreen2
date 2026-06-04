@@ -72,23 +72,37 @@
   function injectTrialBanner(remaining, isFirst) {
     var inject = function() {
       var styles = '<style id="mrgreen-trial-style">' +
-        '#mrgreen-trial-bar {' +
-          'position:fixed;top:0;left:0;right:0;z-index:9999;' +
-          'background:linear-gradient(135deg,#141417,#1a1a1f);' +
-          'border-bottom:1px solid rgba(245,158,11,.4);' +
+        '#mrgreen-trial-bar{position:fixed;top:0;left:0;right:0;z-index:9999;' +
+          'background:linear-gradient(135deg,#060708,#0c0e0b);' +
+          'border-bottom:2px solid rgba(34,197,94,.3);' +
           'padding:10px 16px;display:flex;align-items:center;' +
-          'justify-content:space-between;flex-wrap:wrap;gap:10px;' +
-          'font-family:system-ui,sans-serif;' +
-          'box-shadow:0 4px 24px rgba(0,0,0,.5);' +
-        '}' +
-        '#mrgreen-trial-bar .tbar-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}' +
-        '#mrgreen-trial-bar .tbar-icon{font-size:18px;}' +
-        '#mrgreen-trial-bar .tbar-text{color:#D1D5DB;font-size:.82rem;line-height:1.4;}' +
-        '#mrgreen-trial-bar .tbar-text strong{color:#F59E0B;}' +
-        '#mrgreen-trial-bar .tbar-countdown{font-weight:700;color:#F59E0B;font-variant-numeric:tabular-nums;font-size:.95rem;}' +
-        '#mrgreen-trial-bar .tbar-btn{background:linear-gradient(135deg,#22C55E,#16A34A);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-weight:600;font-size:.82rem;cursor:pointer;white-space:nowrap;font-family:inherit;}' +
-        '#mrgreen-trial-bar .tbar-btn:hover{opacity:.9;}' +
-        'body{padding-top:56px!important;}' +
+          'justify-content:space-between;flex-wrap:wrap;gap:8px;' +
+          'font-family:"DM Sans",system-ui,sans-serif;' +
+          'box-shadow:0 4px 24px rgba(0,0,0,.7),0 0 40px rgba(34,197,94,.04);}' +
+        '#mrgreen-trial-bar .tbar-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex:1;min-width:0;}' +
+        '#mrgreen-trial-bar .tbar-pulse{width:7px;height:7px;border-radius:50%;background:#22C55E;flex-shrink:0;box-shadow:0 0 8px #22C55E;animation:mgpulse 1.5s ease-in-out infinite;}' +
+        '@keyframes mgpulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.75)}}' +
+        '#mrgreen-trial-bar .tbar-text{color:#9CA3AF;font-size:.82rem;line-height:1.4;}' +
+        '#mrgreen-trial-bar .tbar-text strong{color:#fff;}' +
+        '#mrgreen-trial-bar .tbar-countdown{font-weight:700;color:#22C55E;font-variant-numeric:tabular-nums;font-size:.88rem;font-family:"DM Mono",monospace;}' +
+        '#mrgreen-trial-bar .tbar-actions{display:flex;gap:7px;align-items:center;flex-shrink:0;}' +
+        '#mrgreen-trial-bar .tbar-login{background:transparent;border:1px solid rgba(34,197,94,.25);color:#6B7280;border-radius:7px;padding:6px 12px;font-size:.75rem;cursor:pointer;font-family:inherit;transition:all .2s;white-space:nowrap;}' +
+        '#mrgreen-trial-bar .tbar-login:hover{border-color:#22C55E;color:#22C55E;}' +
+        '#mrgreen-trial-bar .tbar-btn{background:linear-gradient(135deg,#22C55E,#16A34A);color:#fff;border:none;border-radius:7px;padding:7px 15px;font-weight:700;font-size:.78rem;cursor:pointer;white-space:nowrap;font-family:inherit;box-shadow:0 0 16px rgba(34,197,94,.25);transition:opacity .2s;}' +
+        '#mrgreen-trial-bar .tbar-btn:hover{opacity:.88;}' +
+        'body{padding-top:52px!important;}' +
+        '#mg-modal{position:fixed;inset:0;z-index:10001;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;padding:16px;font-family:"DM Sans",system-ui,sans-serif;backdrop-filter:blur(4px);}' +
+        '#mg-modal.open{display:flex;}' +
+        '#mg-modal .mbox{background:#0a0a0d;border:1px solid rgba(34,197,94,.2);border-radius:16px;padding:30px 26px;max-width:380px;width:100%;position:relative;box-shadow:0 0 60px rgba(34,197,94,.07);}' +
+        '#mg-modal .mcls{position:absolute;top:13px;right:15px;background:none;border:none;color:#374151;font-size:1.1rem;cursor:pointer;transition:color .2s;}' +
+        '#mg-modal .mcls:hover{color:#9CA3AF;}' +
+        '#mg-modal h3{font-weight:700;font-size:.95rem;color:#fff;margin-bottom:3px;}' +
+        '#mg-modal .msub{font-size:.78rem;color:#6B7280;margin-bottom:18px;}' +
+        '#mg-modal input{width:100%;background:#060607;border:1px solid #1a1a1f;border-radius:8px;padding:11px 13px;color:#fff;font-size:.9rem;font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:10px;transition:border-color .2s;}' +
+        '#mg-modal input:focus{border-color:#22C55E;}' +
+        '#mg-modal .mmsg{font-size:.78rem;min-height:16px;margin-bottom:10px;}' +
+        '#mg-modal .msbtn{width:100%;background:linear-gradient(135deg,#22C55E,#16A34A);color:#fff;border:none;border-radius:8px;padding:12px;font-weight:700;font-size:.9rem;cursor:pointer;font-family:inherit;box-shadow:0 4px 20px rgba(34,197,94,.2);}' +
+        '#mg-modal .msbtn:disabled{opacity:.5;cursor:not-allowed;}' +
         '</style>';
 
       document.head.insertAdjacentHTML('beforeend', styles);
@@ -99,11 +113,29 @@
         ? '<strong>Bem-vindo! Seu trial gratuito de 24h comeou agora.</strong> Aproveite por: '
         : 'Seu <strong>periodo gratuito</strong> encerra em: ';
       bar.innerHTML = '<div class="tbar-left">' +
-        '<span class="tbar-icon">\u23F3</span>' +
+        '<span class="tbar-pulse"></span>' +
         '<div class="tbar-text">' + msg +
         '<span class="tbar-countdown" id="tbar-cd">' + formatMs(remaining) + '</span>' +
         '</div></div>' +
-        '<button class="tbar-btn" onclick="window.location.href=\'paywall.html\'">&#x1F513; Assinar e continuar</button>';
+        '<div class="tbar-actions">' +
+        '<button class="tbar-login" onclick="MgOpen()">Ja sou assinante</button>' +
+        '<button class="tbar-btn" onclick="window.location.href=\'paywall.html\'">Assinar agora</button>' +
+        '</div>';
+
+      // Modal
+      if (!document.getElementById('mg-modal')) {
+        var modal = document.createElement('div');
+        modal.id = 'mg-modal';
+        modal.innerHTML = '<div class="mbox"><button class="mcls" onclick="MgClose()">&times;</button>' +
+          '<h3>&#128273; Ja sou Assinante</h3>' +
+          '<p class="msub">Digite o e-mail usado no pagamento</p>' +
+          '<input id="mg-em" type="email" placeholder="seu@email.com"/>' +
+          '<div class="mmsg" id="mg-msg"></div>' +
+          '<button class="msbtn" id="mg-sb" onclick="MgLogin()">Verificar acesso</button></div>';
+        document.body.appendChild(modal);
+        document.getElementById('mg-em').addEventListener('keydown', function(e){ if(e.key==='Enter') window.MgLogin(); });
+      }
+
       document.body.prepend(bar);
 
       var ms = remaining;
@@ -125,5 +157,258 @@
     }
   }
 
+
+
+  // Inject broker button after React mounts
+  function injectBrokerBtn() {
+    if (document.getElementById('mg-broker-wrap')) return;
+    var h1 = document.querySelector('h1');
+    if (!h1) return;
+    var wrap = document.createElement('div');
+    wrap.id = 'mg-broker-wrap';
+    wrap.innerHTML = '<a id="mg-broker-btn" href="https://trade.vornabroker.com/register?aff=822269&aff_model=revenue&afftrack=" target="_blank" rel="noopener">' +
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" x2="6" y1="1" y2="4"/><line x1="10" x2="10" y1="1" y2="4"/><line x1="14" x2="14" y1="1" y2="4"/></svg>' +
+      'Acessar Corretora Parceira</a>';
+    h1.parentNode.insertBefore(wrap, h1.nextSibling);
+  }
+  // Try immediately and also after React loads
+  if (document.readyState === 'complete') injectBrokerBtn();
+  else window.addEventListener('load', injectBrokerBtn);
+  setTimeout(injectBrokerBtn, 500);
+  setTimeout(injectBrokerBtn, 1500);
+
+  window.MgOpen = function() {
+    var m = document.getElementById('mg-modal');
+    if (m) { m.className = 'open'; setTimeout(function(){ var e = document.getElementById('mg-em'); if(e) e.focus(); }, 80); }
+  };
+  window.MgClose = function() {
+    var m = document.getElementById('mg-modal'); if(m) m.className = '';
+    var msg = document.getElementById('mg-msg'); if(msg) msg.textContent = '';
+    var i = document.getElementById('mg-em'); if(i) i.value = '';
+  };
+  window.MgLogin = async function() {
+    var SB_URL = 'https://lgwqjhydasdnxxalpglm.supabase.co';
+    var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxnd3FqaHlkYXNkbnh4YWxwZ2xtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NzkwNTUsImV4cCI6MjA5MzE1NTA1NX0.c5Pu51dQwWAwYOIJRQgJVG8MApBpmg_k_r8A9Ip_bRM';
+    var SK = 'mrgreen_session';
+    var i=document.getElementById('mg-em'), msg=document.getElementById('mg-msg'), btn=document.getElementById('mg-sb');
+    if(!i||!msg||!btn) return;
+    var email=i.value.trim().toLowerCase();
+    if(!email||email.indexOf('@')<0){msg.style.color='#EF4444';msg.textContent='E-mail invalido.';return;}
+    btn.textContent='Verificando...';btn.disabled=true;msg.style.color='#6B7280';msg.textContent='Consultando...';
+    try {
+      var r=await fetch(SB_URL+'/rest/v1/users?email=eq.'+encodeURIComponent(email)+'&select=*',
+        {headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}});
+      var d=await r.json(); var user=d&&d.length>0?d[0]:null;
+      if(!user){msg.style.color='#EF4444';msg.textContent='E-mail nao encontrado.';btn.textContent='Verificar acesso';btn.disabled=false;return;}
+      var active=user.plan==='lifetime'||(user.plan==='monthly'&&user.expires_at&&new Date(user.expires_at)>new Date());
+      if(!active){msg.style.color='#EF4444';msg.textContent='Plano expirado.';btn.textContent='Verificar acesso';btn.disabled=false;return;}
+      localStorage.setItem(SK,JSON.stringify({email:user.email,plan:user.plan,checked:Date.now(),expires_at:user.expires_at||null}));
+      msg.style.color='#22C55E';msg.textContent='Acesso liberado! Carregando...';
+      setTimeout(function(){window.location.reload();},900);
+    } catch(e){msg.style.color='#EF4444';msg.textContent='Erro de conexao.';btn.textContent='Verificar acesso';btn.disabled=false;}
+  };
+
 })();
-</script><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="preload" href="/_next/static/media/e4af272ccee01ff0-s.p.woff2" as="font" crossorigin="" type="font/woff2"><link rel="stylesheet" href="css/65cd5c3497cc4293.css" data-precedence="next"><link rel="preload" as="script" fetchpriority="low" href="/_next/static/chunks/webpack-80b1d124ec145803.js"><script src="js/8490244b-88dcbd25b7c53cd9.js" async=""></script><script src="js/571-d1d9b75d7dc9a77a.js" async=""></script><script src="js/main-app-d1cf215c4567dde7.js" async=""></script><script src="js/layout-7d226019e797eb97.js" async=""></script><script src="js/880-d6ae298848f42cad.js" async=""></script><script src="js/page-824e9864b055145c.js" async=""></script><meta name="next-size-adjust" content=""><title>IA de Trading por Print</title><meta name="description" content="Análise inteligente de gráficos de trading com IA"><link rel="icon" href="images/favicon.ico" type="image/x-icon" sizes="16x16"><script src="js/polyfills-42372ed130431b0a.js" nomodule=""></script></head><body class="__className_f367f3 bg-[#0C0C0E] text-white min-h-screen"><div class="min-h-screen bg-[#0C0C0E] p-4"><div class="space-y-12"><div class="max-w-4xl mx-auto space-y-8"><div class="text-center space-y-4 pt-8"><div class="flex items-center justify-center gap-3 mb-4"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dollar-sign h-8 w-8 text-[#22C55E]"><line x1="12" x2="12" y1="2" y2="22"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg><h1 class="text-4xl font-bold bg-gradient-to-r from-[#22C55E] to-[#16A34A] bg-clip-text text-transparent">MR. GREEN</h1></div><p class="text-xl text-gray-300 max-w-2xl mx-auto">Análise técnica profissional de gráficos com motor institucional avançado. Envie um print do seu gráfico e receba relatórios técnicos de nível Wall Street.</p></div><div class="grid md:grid-cols-3 gap-6"><div class="rounded-xl border text-card-foreground shadow bg-[#141417] border-[#242428]"><div class="flex flex-col space-y-1.5 p-6 text-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chart-column h-8 w-8 text-[#22C55E] mx-auto mb-2"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg><div class="font-semibold leading-none tracking-tight text-white">Análise Institucional</div></div><div class="p-6 pt-0"><p class="text-gray-400 text-center">5 fases de análise com indicadores técnicos: Bollinger, MACD, RSI, EMA/SMA e OBV</p></div></div><div class="rounded-xl border text-card-foreground shadow bg-[#141417] border-[#242428]"><div class="flex flex-col space-y-1.5 p-6 text-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trending-up h-8 w-8 text-[#22C55E] mx-auto mb-2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg><div class="font-semibold leading-none tracking-tight text-white">Relatórios Profissionais</div></div><div class="p-6 pt-0"><p class="text-gray-400 text-center">Sinais COMPRA/VENDA com confiabilidade dinâmica e análise de padrões de mercado</p></div></div><div class="rounded-xl border text-card-foreground shadow bg-[#141417] border-[#242428]"><div class="flex flex-col space-y-1.5 p-6 text-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dollar-sign h-8 w-8 text-[#22C55E] mx-auto mb-2"><line x1="12" x2="12" y1="2" y2="22"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg><div class="font-semibold leading-none tracking-tight text-white">Motor Institucional</div></div><div class="p-6 pt-0"><p class="text-gray-400 text-center">Processamento de nível profissional sem dependências externas, variações dinâmicas</p></div></div></div><div class="rounded-xl border text-card-foreground shadow bg-[#141417] border-[#242428] border-l-4 border-l-yellow-500"><div class="flex flex-col space-y-1.5 p-6"><div class="flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert h-5 w-5 text-yellow-500"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg><div class="font-semibold tracking-tight text-yellow-500 text-lg">Aviso Importante</div></div></div><div class="p-6 pt-0"><div class="space-y-2"><p class="text-gray-300"><strong>Conteúdo educacional:</strong> Este sistema fornece análises técnicas simuladas para fins educacionais.</p><p class="text-gray-300"><strong>Você decide e executa:</strong> Todas as decisões de trading são de sua responsabilidade.</p><p class="text-gray-300"><strong>Sem garantias:</strong> Não há garantias de resultado. Trading envolve riscos significativos.</p></div></div></div></div><div class="max-w-2xl mx-auto space-y-6"><div class="rounded-xl border text-card-foreground shadow bg-[#141417] border-[#242428]"><div class="flex flex-col space-y-1.5 p-6"><div class="font-semibold leading-none tracking-tight text-white flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload h-5 w-5 text-[#22C55E]"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" x2="12" y1="3" y2="15"></line></svg>Selecionar Gráfico para Análise</div><div class="text-sm text-gray-400">Formatos: PNG/JPG • Máx: 2 MB • Mín: 900×600</div></div><div class="p-6 pt-0"><div class="border-2 border-dashed rounded-lg p-8 text-center transition-colors border-[#242428] hover:border-[#22C55E]/50"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image h-12 w-12 text-gray-400 mx-auto mb-4"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg><p class="text-gray-300 mb-4">Arraste seu gráfico aqui ou clique para selecionar</p><p class="text-sm text-gray-500 mb-4">Dica: mantenha candles, eixos e barra superior visíveis</p><input type="file" accept="image/png,image/jpeg,image/jpg" class="hidden" id="file-input"><label for="file-input"><span class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border bg-background shadow-sm h-9 px-4 py-2 border-[#22C55E] text-[#22C55E] hover:bg-[#22C55E] hover:text-white cursor-pointer">Selecionar Arquivo</span></label></div></div></div></div></div></div><script src="js/webpack-80b1d124ec145803.js" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n2:I[9776,[\"177\",\"static/chunks/app/layout-7d226019e797eb97.js\"],\"TradingProvider\"]\n3:I[464,[],\"\"]\n4:I[6950,[],\"\"]\n5:I[8077,[],\"ClientPageRoot\"]\n6:I[1736,[\"880\",\"static/chunks/880-d6ae298848f42cad.js\",\"974\",\"static/chunks/app/page-824e9864b055145c.js\"],\"default\"]\n9:I[4880,[],\"OutletBoundary\"]\nc:I[4880,[],\"ViewportBoundary\"]\ne:I[4880,[],\"MetadataBoundary\"]\n10:I[6751,[],\"\"]\n:HL[\"/_next/static/media/e4af272ccee01ff0-s.p.woff2\",\"font\",{\"crossOrigin\":\"\",\"type\":\"font/woff2\"}]\n:HL[\"/_next/static/css/65cd5c3497cc4293.css\",\"style\"]\n"])</script><script>self.__next_f.push([1,"0:{\"P\":null,\"b\":\"NqFIeP98DGKY_4hyhKaQl\",\"p\":\"\",\"c\":[\"\",\"\"],\"i\":false,\"f\":[[[\"\",{\"children\":[\"__PAGE__\",{}]},\"$undefined\",\"$undefined\",true],[\"\",[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/65cd5c3497cc4293.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"pt-BR\",\"className\":\"dark\",\"children\":[\"$\",\"body\",null,{\"className\":\"__className_f367f3 bg-[#0C0C0E] text-white min-h-screen\",\"children\":[\"$\",\"$L2\",null,{\"children\":[\"$\",\"$L3\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[[\"$\",\"title\",null,{\"children\":\"404: This page could not be found.\"}],[\"$\",\"div\",null,{\"style\":{\"fontFamily\":\"system-ui,\\\"Segoe UI\\\",Roboto,Helvetica,Arial,sans-serif,\\\"Apple Color Emoji\\\",\\\"Segoe UI Emoji\\\"\",\"height\":\"100vh\",\"textAlign\":\"center\",\"display\":\"flex\",\"flexDirection\":\"column\",\"alignItems\":\"center\",\"justifyContent\":\"center\"},\"children\":[\"$\",\"div\",null,{\"children\":[[\"$\",\"style\",null,{\"dangerouslySetInnerHTML\":{\"__html\":\"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}\"}}],[\"$\",\"h1\",null,{\"className\":\"next-error-h1\",\"style\":{\"display\":\"inline-block\",\"margin\":\"0 20px 0 0\",\"padding\":\"0 23px 0 0\",\"fontSize\":24,\"fontWeight\":500,\"verticalAlign\":\"top\",\"lineHeight\":\"49px\"},\"children\":404}],[\"$\",\"div\",null,{\"style\":{\"display\":\"inline-block\"},\"children\":[\"$\",\"h2\",null,{\"style\":{\"fontSize\":14,\"fontWeight\":400,\"lineHeight\":\"49px\",\"margin\":0},\"children\":\"This page could not be found.\"}]}]]}]}]],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}]}]]}],{\"children\":[\"__PAGE__\",[\"$\",\"$1\",\"c\",{\"children\":[[\"$\",\"$L5\",null,{\"Component\":\"$6\",\"searchParams\":{},\"params\":{},\"promises\":[\"$@7\",\"$@8\"]}],\"$undefined\",null,[\"$\",\"$L9\",null,{\"children\":[\"$La\",\"$Lb\",null]}]]}],{},null,false]},null,false],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$1\",\"yP7g3p8PGlZmrMx6IpybJ\",{\"children\":[[\"$\",\"$Lc\",null,{\"children\":\"$Ld\"}],[\"$\",\"meta\",null,{\"name\":\"next-size-adjust\",\"content\":\"\"}]]}],[\"$\",\"$Le\",null,{\"children\":\"$Lf\"}]]}],false]],\"m\":\"$undefined\",\"G\":[\"$10\",\"$undefined\"],\"s\":false,\"S\":true}\n"])</script><script>self.__next_f.push([1,"7:{}\n8:{}\n"])</script><script>self.__next_f.push([1,"d:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\na:null\n"])</script><script>self.__next_f.push([1,"b:null\nf:[[\"$\",\"title\",\"0\",{\"children\":\"IA de Trading por Print\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"Análise inteligente de gráficos de trading com IA\"}],[\"$\",\"link\",\"2\",{\"rel\":\"icon\",\"href\":\"/favicon.ico\",\"type\":\"image/x-icon\",\"sizes\":\"16x16\"}]]\n"])</script></body></html>
+</script><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="preload" href="/_next/static/media/e4af272ccee01ff0-s.p.woff2" as="font" crossorigin="" type="font/woff2"><link rel="stylesheet" href="css/65cd5c3497cc4293.css" data-precedence="next"><link rel="preload" as="script" fetchpriority="low" href="/_next/static/chunks/webpack-80b1d124ec145803.js"><script src="js/8490244b-88dcbd25b7c53cd9.js" async=""></script><script src="js/571-d1d9b75d7dc9a77a.js" async=""></script><script src="js/main-app-d1cf215c4567dde7.js" async=""></script><script src="js/layout-7d226019e797eb97.js" async=""></script><script src="js/880-d6ae298848f42cad.js" async=""></script><script src="js/page-824e9864b055145c.js" async=""></script><meta name="next-size-adjust" content=""><title>IA de Trading por Print</title><meta name="description" content="Análise inteligente de gráficos de trading com IA"><link rel="icon" href="images/favicon.ico" type="image/x-icon" sizes="16x16"><script src="js/polyfills-42372ed130431b0a.js" nomodule=""></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* MR. GREEN — Visual Premium */
+:root{--g:#22C55E;--gd:#16A34A;}
+body{font-family:'DM Sans',system-ui,sans-serif!important;background:#080809!important;}
+
+/* Grid overlay */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(34,197,94,.03) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(34,197,94,.03) 1px,transparent 1px);
+  background-size:64px 64px;}
+
+/* Green glow top */
+body::after{content:'';position:fixed;top:-300px;left:50%;transform:translateX(-50%);
+  width:900px;height:600px;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse,rgba(34,197,94,.07) 0%,transparent 65%);}
+
+/* Title */
+h1.text-4xl{
+  font-family:'Bebas Neue',sans-serif!important;
+  font-size:clamp(4rem,12vw,7rem)!important;
+  letter-spacing:.04em!important;line-height:.9!important;
+  background:linear-gradient(160deg,#4ADE80 0%,#22C55E 40%,#16A34A 100%)!important;
+  -webkit-background-clip:text!important;-webkit-text-fill-color:transparent!important;
+  background-clip:text!important;
+  filter:drop-shadow(0 0 32px rgba(34,197,94,.2))!important;}
+
+/* Hide default icon next to title */
+.lucide-dollar-sign.h-8.w-8{display:none!important;}
+
+/* Cards */
+.rounded-xl.border.bg-\[\#141417\].border-\[\#242428\]{
+  background:#0f0f12!important;border-color:#1a1a1f!important;
+  transition:border-color .25s,transform .25s,box-shadow .25s!important;
+  position:relative;overflow:hidden;}
+.rounded-xl.border.bg-\[\#141417\].border-\[\#242428\]:hover{
+  border-color:rgba(34,197,94,.25)!important;
+  transform:translateY(-2px)!important;
+  box-shadow:0 8px 32px rgba(34,197,94,.08)!important;}
+
+/* Upload card dashed border */
+.border-2.border-dashed.rounded-lg{
+  background:rgba(34,197,94,.02)!important;}
+
+/* Warning box */
+.border-l-4.border-l-yellow-500{
+  background:rgba(245,158,11,.03)!important;
+  border-color:rgba(245,158,11,.15)!important;
+  border-left:3px solid #F59E0B!important;}
+
+/* Broker button */
+#mg-broker-wrap{text-align:center;margin:20px 0 8px;}
+#mg-broker-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  background:linear-gradient(135deg,#22C55E,#16A34A);
+  color:#fff;border:none;border-radius:10px;
+  padding:13px 32px;font-family:'DM Sans',sans-serif;
+  font-size:1rem;font-weight:700;cursor:pointer;
+  text-decoration:none;
+  box-shadow:0 0 28px rgba(34,197,94,.28),0 4px 14px rgba(0,0,0,.4);
+  transition:all .2s;letter-spacing:.02em;position:relative;overflow:hidden;}
+#mg-broker-btn::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.1),transparent);}
+#mg-broker-btn:hover{transform:translateY(-2px);
+  box-shadow:0 0 44px rgba(34,197,94,.38),0 8px 24px rgba(0,0,0,.5);}
+#mg-broker-btn svg{width:18px;height:18px;flex-shrink:0;}
+
+/* ── Timeframe Selector ──────────────────────────── */
+#mg-tf-wrap{
+  max-width:42rem;
+  margin:0 auto 1.5rem;
+  animation:mgFadeIn .3s ease;
+}
+@keyframes mgFadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+#mg-tf-inner{
+  background:#141417;
+  border:1px solid #242428;
+  border-radius:0.75rem;
+  padding:1.5rem;
+}
+.mg-tf-head{
+  display:flex;align-items:center;gap:0.5rem;
+  margin-bottom:0.5rem;
+}
+.mg-tf-head svg{color:#22C55E;flex-shrink:0;}
+.mg-tf-head span{font-size:1rem;font-weight:600;color:#fff;}
+.mg-tf-sub{color:#9ca3af;font-size:0.85rem;margin-bottom:1.1rem;}
+#mg-tf-btns{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;}
+.mg-tf-btn{
+  padding:0.8rem 0;border-radius:0.5rem;font-size:1rem;
+  font-weight:700;cursor:pointer;transition:all .2s;
+  border:2px solid;background:transparent;letter-spacing:.04em;
+}
+.mg-active{background:rgba(34,197,94,.15);border-color:#22C55E;color:#22C55E;}
+.mg-inactive{border-color:#374151;color:#6b7280;}
+.mg-inactive:hover{border-color:#4b5563;color:#9ca3af;}
+</style></head><body class="__className_f367f3 bg-[#0C0C0E] text-white min-h-screen"><div class="min-h-screen bg-[#0C0C0E] p-4"><div class="space-y-12"><div class="max-w-4xl mx-auto space-y-8"><div class="text-center space-y-4 pt-8"><div class="flex items-center justify-center gap-3 mb-4"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dollar-sign h-8 w-8 text-[#22C55E]"><line x1="12" x2="12" y1="2" y2="22"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg><h1 class="text-4xl font-bold bg-gradient-to-r from-[#22C55E] to-[#16A34A] bg-clip-text text-transparent">MR. GREEN</h1>
+</div><p class="text-xl text-gray-300 max-w-2xl mx-auto">Análise técnica profissional de gráficos com motor institucional avançado. Envie um print do seu gráfico e receba relatórios técnicos de nível Wall Street.</p></div><div class="grid md:grid-cols-3 gap-6"><div class="rounded-xl border text-card-foreground shadow bg-[#141417] border-[#242428]"><div class="flex flex-col space-y-1.5 p-6 text-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chart-column h-8 w-8 text-[#22C55E] mx-auto mb-2"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg><div class="font-semibold leading-none tracking-tight text-white">Análise Institucional</div></div><div class="p-6 pt-0"><p class="text-gray-400 text-center">5 fases de análise com indicadores técnicos: Bollinger, MACD, RSI, EMA/SMA e OBV</p></div></div><div class="rounded-xl border text-card-foreground shadow bg-[#141417] border-[#242428]"><div class="flex flex-col space-y-1.5 p-6 text-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trending-up h-8 w-8 text-[#22C55E] mx-auto mb-2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg><div class="font-semibold leading-none tracking-tight text-white">Relatórios Profissionais</div></div><div class="p-6 pt-0"><p class="text-gray-400 text-center">Sinais COMPRA/VENDA com confiabilidade dinâmica e análise de padrões de mercado</p></div></div><div class="rounded-xl border text-card-foreground shadow bg-[#141417] border-[#242428]"><div class="flex flex-col space-y-1.5 p-6 text-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dollar-sign h-8 w-8 text-[#22C55E] mx-auto mb-2"><line x1="12" x2="12" y1="2" y2="22"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg><div class="font-semibold leading-none tracking-tight text-white">Motor Institucional</div></div><div class="p-6 pt-0"><p class="text-gray-400 text-center">Processamento de nível profissional sem dependências externas, variações dinâmicas</p></div></div></div><div class="rounded-xl border text-card-foreground shadow bg-[#141417] border-[#242428] border-l-4 border-l-yellow-500"><div class="flex flex-col space-y-1.5 p-6"><div class="flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert h-5 w-5 text-yellow-500"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg><div class="font-semibold tracking-tight text-yellow-500 text-lg">Aviso Importante</div></div></div><div class="p-6 pt-0"><div class="space-y-2"><p class="text-gray-300"><strong>Conteúdo educacional:</strong> Este sistema fornece análises técnicas simuladas para fins educacionais.</p><p class="text-gray-300"><strong>Você decide e executa:</strong> Todas as decisões de trading são de sua responsabilidade.</p><p class="text-gray-300"><strong>Sem garantias:</strong> Não há garantias de resultado. Trading envolve riscos significativos.</p></div></div></div></div><div class="max-w-2xl mx-auto space-y-6"><div class="rounded-xl border text-card-foreground shadow bg-[#141417] border-[#242428]"><div class="flex flex-col space-y-1.5 p-6"><div class="font-semibold leading-none tracking-tight text-white flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload h-5 w-5 text-[#22C55E]"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" x2="12" y1="3" y2="15"></line></svg>Selecionar Gráfico para Análise</div><div class="text-sm text-gray-400">Formatos: PNG/JPG • Máx: 2 MB • Mín: 900×600</div></div><div class="p-6 pt-0"><div class="border-2 border-dashed rounded-lg p-8 text-center transition-colors border-[#242428] hover:border-[#22C55E]/50"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image h-12 w-12 text-gray-400 mx-auto mb-4"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg><p class="text-gray-300 mb-4">Arraste seu gráfico aqui ou clique para selecionar</p><p class="text-sm text-gray-500 mb-4">Dica: mantenha candles, eixos e barra superior visíveis</p><input type="file" accept="image/png,image/jpeg,image/jpg" class="hidden" id="file-input"><label for="file-input"><span class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border bg-background shadow-sm h-9 px-4 py-2 border-[#22C55E] text-[#22C55E] hover:bg-[#22C55E] hover:text-white cursor-pointer">Selecionar Arquivo</span></label></div></div></div></div></div></div><script src="js/webpack-80b1d124ec145803.js" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n2:I[9776,[\"177\",\"static/chunks/app/layout-7d226019e797eb97.js\"],\"TradingProvider\"]\n3:I[464,[],\"\"]\n4:I[6950,[],\"\"]\n5:I[8077,[],\"ClientPageRoot\"]\n6:I[1736,[\"880\",\"static/chunks/880-d6ae298848f42cad.js\",\"974\",\"static/chunks/app/page-824e9864b055145c.js\"],\"default\"]\n9:I[4880,[],\"OutletBoundary\"]\nc:I[4880,[],\"ViewportBoundary\"]\ne:I[4880,[],\"MetadataBoundary\"]\n10:I[6751,[],\"\"]\n:HL[\"/_next/static/media/e4af272ccee01ff0-s.p.woff2\",\"font\",{\"crossOrigin\":\"\",\"type\":\"font/woff2\"}]\n:HL[\"/_next/static/css/65cd5c3497cc4293.css\",\"style\"]\n"])</script><script>self.__next_f.push([1,"0:{\"P\":null,\"b\":\"NqFIeP98DGKY_4hyhKaQl\",\"p\":\"\",\"c\":[\"\",\"\"],\"i\":false,\"f\":[[[\"\",{\"children\":[\"__PAGE__\",{}]},\"$undefined\",\"$undefined\",true],[\"\",[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/65cd5c3497cc4293.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"pt-BR\",\"className\":\"dark\",\"children\":[\"$\",\"body\",null,{\"className\":\"__className_f367f3 bg-[#0C0C0E] text-white min-h-screen\",\"children\":[\"$\",\"$L2\",null,{\"children\":[\"$\",\"$L3\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[[\"$\",\"title\",null,{\"children\":\"404: This page could not be found.\"}],[\"$\",\"div\",null,{\"style\":{\"fontFamily\":\"system-ui,\\\"Segoe UI\\\",Roboto,Helvetica,Arial,sans-serif,\\\"Apple Color Emoji\\\",\\\"Segoe UI Emoji\\\"\",\"height\":\"100vh\",\"textAlign\":\"center\",\"display\":\"flex\",\"flexDirection\":\"column\",\"alignItems\":\"center\",\"justifyContent\":\"center\"},\"children\":[\"$\",\"div\",null,{\"children\":[[\"$\",\"style\",null,{\"dangerouslySetInnerHTML\":{\"__html\":\"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}\"}}],[\"$\",\"h1\",null,{\"className\":\"next-error-h1\",\"style\":{\"display\":\"inline-block\",\"margin\":\"0 20px 0 0\",\"padding\":\"0 23px 0 0\",\"fontSize\":24,\"fontWeight\":500,\"verticalAlign\":\"top\",\"lineHeight\":\"49px\"},\"children\":404}],[\"$\",\"div\",null,{\"style\":{\"display\":\"inline-block\"},\"children\":[\"$\",\"h2\",null,{\"style\":{\"fontSize\":14,\"fontWeight\":400,\"lineHeight\":\"49px\",\"margin\":0},\"children\":\"This page could not be found.\"}]}]]}]}]],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}]}]]}],{\"children\":[\"__PAGE__\",[\"$\",\"$1\",\"c\",{\"children\":[[\"$\",\"$L5\",null,{\"Component\":\"$6\",\"searchParams\":{},\"params\":{},\"promises\":[\"$@7\",\"$@8\"]}],\"$undefined\",null,[\"$\",\"$L9\",null,{\"children\":[\"$La\",\"$Lb\",null]}]]}],{},null,false]},null,false],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$1\",\"yP7g3p8PGlZmrMx6IpybJ\",{\"children\":[[\"$\",\"$Lc\",null,{\"children\":\"$Ld\"}],[\"$\",\"meta\",null,{\"name\":\"next-size-adjust\",\"content\":\"\"}]]}],[\"$\",\"$Le\",null,{\"children\":\"$Lf\"}]]}],false]],\"m\":\"$undefined\",\"G\":[\"$10\",\"$undefined\"],\"s\":false,\"S\":true}\n"])</script><script>self.__next_f.push([1,"7:{}\n8:{}\n"])</script><script>self.__next_f.push([1,"d:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\na:null\n"])</script><script>self.__next_f.push([1,"b:null\nf:[[\"$\",\"title\",\"0\",{\"children\":\"IA de Trading por Print\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"Análise inteligente de gráficos de trading com IA\"}],[\"$\",\"link\",\"2\",{\"rel\":\"icon\",\"href\":\"/favicon.ico\",\"type\":\"image/x-icon\",\"sizes\":\"16x16\"}]]\n"])</script>
+<script>
+(function(){
+  /* ─ estado ─ */
+  window.mgTF = 1;
+
+  /* ─ muda seleção ─ */
+  window.mgSelectTF = function(min){
+    window.mgTF = min;
+    var b1 = document.getElementById('mg-btn-1');
+    var b5 = document.getElementById('mg-btn-5');
+    if(!b1||!b5) return;
+    b1.className = 'mg-tf-btn ' + (min===1?'mg-active':'mg-inactive');
+    b5.className = 'mg-tf-btn ' + (min===5?'mg-active':'mg-inactive');
+  };
+
+  /* ─ monta o HTML do card ─ */
+  function buildCard(){
+    var w = document.createElement('div');
+    w.id = 'mg-tf-wrap';
+    w.innerHTML =
+      '<div id="mg-tf-inner">'
+      +'<div class="mg-tf-head">'
+      +'<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"'
+      +' fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+      +'<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'
+      +'<span>Selecione o Timeframe da Operação</span>'
+      +'</div>'
+      +'<p class="mg-tf-sub">Escolha o tempo de expiração antes de enviar o gráfico para análise.</p>'
+      +'<div id="mg-tf-btns">'
+      +'<button id="mg-btn-1" class="mg-tf-btn mg-active" onclick="mgSelectTF(1)">1 MIN</button>'
+      +'<button id="mg-btn-5" class="mg-tf-btn mg-inactive" onclick="mgSelectTF(5)">5 MIN</button>'
+      +'</div>'
+      +'</div>';
+    return w;
+  }
+
+  /* ─ encontra onde inserir (após max-w-4xl, antes max-w-2xl) ─ */
+  function findAnchor(){
+    /* O bloco max-w-4xl contém "Aviso Importante" */
+    var els = document.querySelectorAll('.max-w-4xl');
+    for(var i=0;i<els.length;i++){
+      if(els[i].textContent.indexOf('Aviso Importante')!==-1) return els[i];
+    }
+    return null;
+  }
+
+  /* ─ insere o card ─ */
+  function injectCard(){
+    if(document.getElementById('mg-tf-wrap')) return; // já existe
+    var anchor = findAnchor();
+    if(!anchor) return;
+    var parent = anchor.parentNode;
+    if(!parent) return;
+    var card = buildCard();
+    /* insere logo após o bloco max-w-4xl */
+    var next = anchor.nextSibling;
+    parent.insertBefore(card, next);
+    /* restaura seleção visual */
+    window.mgSelectTF(window.mgTF);
+  }
+
+  /* ─ corrige labels no relatório ─ */
+  function patchReport(){
+    var label = window.mgTF===1?'1MIN':'5MIN';
+    document.querySelectorAll('p.text-sm.text-gray-400').forEach(function(el){
+      var t = el.textContent.trim();
+      if(t==='Timeframe'||t==='Validade'){
+        var sib = el.nextElementSibling;
+        if(sib && (sib.textContent.trim()==='1MIN'||sib.textContent.trim()==='5MIN')){
+          sib.textContent = label;
+        }
+      }
+    });
+  }
+
+  /* ─ observer: re-injeta se React remover o card ─ */
+  var obs = new MutationObserver(function(){
+    patchReport();
+    if(!document.getElementById('mg-tf-wrap')){
+      obs.disconnect();
+      injectCard();
+      /* reconecta após React terminar sua reconciliação */
+      setTimeout(function(){
+        obs.observe(document.body,{childList:true,subtree:true});
+      },80);
+    }
+  });
+
+  /* ─ aguarda React hidratar (tipicamente ~300-600 ms) antes de agir ─ */
+  function start(){
+    injectCard();
+    obs.observe(document.body,{childList:true,subtree:true});
+  }
+
+  if(document.readyState==='complete'){
+    setTimeout(start, 600);
+  } else {
+    window.addEventListener('load', function(){ setTimeout(start, 600); });
+  }
+})();
+</script>
+</body></html>
