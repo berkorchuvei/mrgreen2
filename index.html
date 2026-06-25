@@ -168,7 +168,7 @@
     wrap.id = 'mg-broker-wrap';
     wrap.innerHTML = '<a id="mg-broker-btn" href="https://trade.vornabroker.com/register?aff=822269&aff_model=revenue&afftrack=" target="_blank" rel="noopener">' +
       '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" x2="6" y1="1" y2="4"/><line x1="10" x2="10" y1="1" y2="4"/><line x1="14" x2="14" y1="1" y2="4"/></svg>' +
-      'Acessar Corretora Parceira</a>';
+      'Acessar Corretora</a>';
     h1.parentNode.insertBefore(wrap, h1.nextSibling);
   }
   // Try immediately and also after React loads
@@ -386,8 +386,47 @@ h1.text-4xl{
   }
 
   /* ─ observer: re-injeta se React remover o card ─ */
+  /* ─ botão corretora ao lado do analisar ─ */
+  function injectBrokerAnalyze(){
+    if(document.getElementById('mg-broker-analyze')) return;
+    var analyzeBtn = document.querySelector('button.w-full.bg-gradient-to-r');
+    if(!analyzeBtn) return;
+    var parent = analyzeBtn.parentNode;
+    if(!parent) return;
+    var a = document.createElement('a');
+    a.id   = 'mg-broker-analyze';
+    a.href = 'https://trade.vornabroker.com/register?aff=822269&aff_model=revenue&afftrack=';
+    a.target = '_blank';
+    a.rel    = 'noopener';
+    a.style.cssText = [
+      'display:flex','align-items:center','justify-content:center','gap:10px',
+      'background:linear-gradient(135deg,#22C55E,#16A34A)',
+      'color:#fff','border:none','border-radius:10px',
+      'padding:14px 24px',"font-family:'DM Sans',sans-serif",
+      'font-size:1rem','font-weight:700','cursor:pointer',
+      'text-decoration:none','width:100%',
+      'box-shadow:0 0 28px rgba(34,197,94,.28),0 4px 14px rgba(0,0,0,.4)',
+      'transition:all .2s','letter-spacing:.02em'
+    ].join(';');
+    a.innerHTML =
+      '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"'
+      +' fill="none" stroke="currentColor" stroke-width="2.5"'
+      +' stroke-linecap="round" stroke-linejoin="round">'
+      +'<path d="M18 8h1a4 4 0 0 1 0 8h-1"/>'
+      +'<path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>'
+      +'<line x1="6" x2="6" y1="1" y2="4"/>'
+      +'<line x1="10" x2="10" y1="1" y2="4"/>'
+      +'<line x1="14" x2="14" y1="1" y2="4"/>'
+      +'</svg>'
+      +'Acessar Corretora';
+    a.onmouseover = function(){ this.style.transform='translateY(-2px)'; this.style.boxShadow='0 0 44px rgba(34,197,94,.38),0 8px 24px rgba(0,0,0,.5)'; };
+    a.onmouseout  = function(){ this.style.transform='';                  this.style.boxShadow='0 0 28px rgba(34,197,94,.28),0 4px 14px rgba(0,0,0,.4)'; };
+    parent.insertBefore(a, analyzeBtn.nextSibling);
+  }
+
   var obs = new MutationObserver(function(){
     patchReport();
+    injectBrokerAnalyze();
     if(!document.getElementById('mg-tf-wrap')){
       obs.disconnect();
       injectCard();
