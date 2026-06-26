@@ -212,110 +212,203 @@
 </script><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="preload" href="/_next/static/media/e4af272ccee01ff0-s.p.woff2" as="font" crossorigin="" type="font/woff2"><link rel="stylesheet" href="css/65cd5c3497cc4293.css" data-precedence="next"><link rel="preload" as="script" fetchpriority="low" href="/_next/static/chunks/webpack-80b1d124ec145803.js"><script src="js/8490244b-88dcbd25b7c53cd9.js" async=""></script><script src="js/571-d1d9b75d7dc9a77a.js" async=""></script><script src="js/main-app-d1cf215c4567dde7.js" async=""></script><script src="js/layout-7d226019e797eb97.js" async=""></script><script src="js/880-d6ae298848f42cad.js" async=""></script><script src="js/page-824e9864b055145c.js" async=""></script><meta name="next-size-adjust" content=""><title>IA de Trading por Print</title><meta name="description" content="Análise inteligente de gráficos de trading com IA"><link rel="icon" href="images/favicon.ico" type="image/x-icon" sizes="16x16"><script src="js/polyfills-42372ed130431b0a.js" nomodule=""></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* MR. GREEN — Visual Premium */
-:root{--g:#22C55E;--gd:#16A34A;}
-body{font-family:'DM Sans',system-ui,sans-serif!important;background:#080809!important;}
+:root{
+  --g:#22C55E;--gd:#16A34A;
+  --bg:#070A08;--surf:#0D1210;
+  --brd:#1C2820;--brd2:#243020;
+  --txt:#F0FDF4;--mut:#6B8070;--mut2:#9DB89E;
+  --accent:#4ADE80;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{background:var(--bg)!important;color:var(--txt)!important;font-family:"DM Sans",system-ui,sans-serif!important;margin:0;padding:0;}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(34,197,94,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(34,197,94,.022) 1px,transparent 1px);
+  background-size:48px 48px;}
+body::after{content:"";position:fixed;top:-280px;left:50%;transform:translateX(-50%);
+  width:1100px;height:750px;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse,rgba(34,197,94,.08) 0%,transparent 58%);}
 
-/* Grid overlay */
-body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-  background-image:linear-gradient(rgba(34,197,94,.03) 1px,transparent 1px),
-  linear-gradient(90deg,rgba(34,197,94,.03) 1px,transparent 1px);
-  background-size:64px 64px;}
+/* Header */
+#mg-site-header{position:sticky;top:0;left:0;right:0;z-index:200;
+  background:rgba(7,10,8,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--brd);}
+#mg-site-header .hinner{max-width:1200px;margin:0 auto;padding:0 20px;height:60px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.mg-brand{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.mg-brand .dot{width:9px;height:9px;border-radius:50%;background:var(--g);box-shadow:0 0 10px var(--g);animation:hpulse 2s ease-in-out infinite}
+@keyframes hpulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.75)}}
+.mg-brand .bname{font-family:"Bebas Neue",sans-serif;font-size:1.4rem;letter-spacing:.1em;
+  background:linear-gradient(135deg,var(--accent),var(--g));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.mg-brand .badge{font-family:"DM Mono",monospace;font-size:.6rem;letter-spacing:.12em;color:var(--mut);text-transform:uppercase;padding:2px 7px;border:1px solid var(--brd);border-radius:4px;}
+.mg-nav{display:flex;align-items:center;gap:24px}
+.mg-nav a{color:var(--mut2);font-size:.85rem;text-decoration:none;transition:color .2s;white-space:nowrap}
+.mg-nav a:hover{color:var(--txt)}
+.mg-hactions{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.mg-hbtn-ghost{background:transparent;border:1px solid var(--brd2);color:var(--mut2);border-radius:8px;padding:7px 15px;font-family:inherit;font-size:.82rem;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;}
+.mg-hbtn-ghost:hover{border-color:var(--g);color:var(--txt)}
+.mg-hbtn-solid{background:linear-gradient(135deg,var(--g),var(--gd));color:#fff;border:none;border-radius:8px;padding:7px 16px;font-family:inherit;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;box-shadow:0 0 20px rgba(34,197,94,.18);}
+.mg-hbtn-solid:hover{transform:translateY(-1px);box-shadow:0 0 30px rgba(34,197,94,.28)}
 
-/* Green glow top */
-body::after{content:'';position:fixed;top:-300px;left:50%;transform:translateX(-50%);
-  width:900px;height:600px;pointer-events:none;z-index:0;
-  background:radial-gradient(ellipse,rgba(34,197,94,.07) 0%,transparent 65%);}
+/* Ticker */
+#mg-ticker{background:var(--surf);border-bottom:1px solid var(--brd);overflow:hidden;height:34px;display:flex;align-items:center;font-family:"DM Mono",monospace;font-size:.72rem;position:relative;z-index:1;}
+#mg-ticker::before{content:"";position:absolute;left:0;top:0;bottom:0;width:60px;background:linear-gradient(90deg,var(--surf),transparent);z-index:2;}
+#mg-ticker::after{content:"";position:absolute;right:0;top:0;bottom:0;width:60px;background:linear-gradient(270deg,var(--surf),transparent);z-index:2;}
+.ticker-track{display:flex;animation:tickerScroll 30s linear infinite;white-space:nowrap;}
+@keyframes tickerScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ticker-item{display:inline-flex;align-items:center;gap:8px;padding:0 28px;border-right:1px solid var(--brd)}
+.ticker-pair{color:var(--mut2);letter-spacing:.06em}.ticker-price{color:var(--txt);font-weight:500}
+.ticker-change.up{color:var(--g)}.ticker-change.dn{color:#EF4444}
 
-/* Title */
-h1.text-4xl{
-  font-family:'Bebas Neue',sans-serif!important;
-  font-size:clamp(4rem,12vw,7rem)!important;
-  letter-spacing:.04em!important;line-height:.9!important;
-  background:linear-gradient(160deg,#4ADE80 0%,#22C55E 40%,#16A34A 100%)!important;
-  -webkit-background-clip:text!important;-webkit-text-fill-color:transparent!important;
-  background-clip:text!important;
-  filter:drop-shadow(0 0 32px rgba(34,197,94,.2))!important;}
+/* Hero */
+#mg-hero{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:80px 24px 64px;text-align:center;}
+.mg-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);color:var(--g);font-size:.7rem;font-weight:600;letter-spacing:.16em;padding:5px 16px;border-radius:99px;margin-bottom:28px;font-family:"DM Mono",monospace;text-transform:uppercase;}
+.mg-eyebrow .live-dot{width:6px;height:6px;border-radius:50%;background:var(--g);animation:hpulse 1.5s ease-in-out infinite;}
+.mg-hero-title{font-family:"Bebas Neue",sans-serif;font-size:clamp(4rem,11vw,7.5rem);letter-spacing:.03em;line-height:.9;margin-bottom:24px;
+  background:linear-gradient(160deg,#fff 0%,var(--accent) 35%,var(--g) 70%,var(--gd) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 48px rgba(34,197,94,.14));}
+.mg-hero-sub{color:var(--mut2);font-size:clamp(1rem,2vw,1.15rem);max-width:620px;margin:0 auto 40px;line-height:1.65;}
+.mg-hero-sub strong{color:var(--txt)}
+.mg-hero-ctas{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:52px}
+.mg-cta-primary{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--g),var(--gd));color:#fff;border:none;border-radius:12px;padding:15px 32px;font-family:"DM Sans",sans-serif;font-size:1rem;font-weight:700;cursor:pointer;text-decoration:none;transition:all .25s;box-shadow:0 0 36px rgba(34,197,94,.22),0 4px 14px rgba(0,0,0,.35);position:relative;overflow:hidden;}
+.mg-cta-primary::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.1),transparent);pointer-events:none}
+.mg-cta-primary:hover{transform:translateY(-2px);box-shadow:0 0 52px rgba(34,197,94,.32),0 8px 24px rgba(0,0,0,.45)}
+.mg-cta-secondary{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid var(--brd2);color:var(--mut2);border-radius:12px;padding:15px 28px;font-family:"DM Sans",sans-serif;font-size:1rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .25s;}
+.mg-cta-secondary:hover{border-color:var(--g);color:var(--txt)}
+.mg-live-card{background:var(--surf);border:1px solid var(--brd);border-radius:16px;padding:20px 24px;max-width:460px;margin:0 auto;text-align:left;position:relative;overflow:hidden;}
+.mg-live-card::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(34,197,94,.4),transparent);}
+.mg-live-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.mg-live-path{font-family:"DM Mono",monospace;font-size:.72rem;color:var(--mut);letter-spacing:.06em}
+.mg-live-badge{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);color:var(--g);font-family:"DM Mono",monospace;font-size:.62rem;font-weight:700;letter-spacing:.12em;padding:3px 10px;border-radius:99px;}
+.mg-live-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mg-live-item{padding:10px 12px;background:rgba(0,0,0,.2);border-radius:8px;border:1px solid rgba(255,255,255,.04)}
+.mg-live-label{font-size:.68rem;color:var(--mut);font-family:"DM Mono",monospace;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px}
+.mg-live-val{font-size:.95rem;font-weight:700;font-family:"DM Mono",monospace;color:var(--txt)}
+.mg-live-val.green{color:var(--g)}.mg-live-val.buy{color:var(--g);font-size:1.1rem}
+.mg-confidence{margin-top:14px;padding:12px 14px;background:rgba(34,197,94,.04);border-radius:8px;border:1px solid rgba(34,197,94,.12)}
+.mg-conf-label{font-size:.7rem;color:var(--mut);font-family:"DM Mono",monospace;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.mg-conf-bar-bg{height:6px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden}
+.mg-conf-bar{height:6px;background:linear-gradient(90deg,var(--g),var(--accent));border-radius:99px;width:87.4%}
+.mg-conf-num{font-family:"DM Mono",monospace;font-size:.82rem;color:var(--g);font-weight:700;margin-top:4px;text-align:right}
 
-/* Hide default icon next to title */
-.lucide-dollar-sign.h-8.w-8{display:none!important;}
+/* Features / How */
+#mg-features,#mg-how{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 24px 64px;}
+.mg-section-eyebrow{font-family:"DM Mono",monospace;font-size:.7rem;letter-spacing:.2em;color:var(--mut);text-transform:uppercase;text-align:center;margin-bottom:12px;}
+.mg-section-title{font-family:"Bebas Neue",sans-serif;font-size:clamp(2.4rem,5vw,3.2rem);letter-spacing:.04em;text-align:center;margin-bottom:40px;background:linear-gradient(135deg,#fff,var(--mut2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.mg-features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.mg-feature{background:var(--surf);border:1px solid var(--brd);border-radius:14px;padding:26px 24px;transition:all .25s;position:relative;overflow:hidden;}
+.mg-feature::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(34,197,94,.1),transparent)}
+.mg-feature:hover{border-color:rgba(34,197,94,.2);transform:translateY(-3px);box-shadow:0 12px 40px rgba(34,197,94,.06)}
+.mg-feature-icon{width:42px;height:42px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;color:var(--g);}
+.mg-feature h3{font-size:.95rem;font-weight:700;color:var(--txt);margin-bottom:8px}
+.mg-feature p{font-size:.85rem;color:var(--mut2);line-height:1.65}
+.mg-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px}
+.mg-step{padding:28px 24px;text-align:center}
+.mg-step-num{font-family:"Bebas Neue",sans-serif;font-size:4rem;letter-spacing:.04em;line-height:1;margin-bottom:-8px;background:linear-gradient(135deg,rgba(34,197,94,.25),rgba(34,197,94,.06));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.mg-step h3{font-size:.95rem;font-weight:700;color:var(--txt);margin-bottom:8px}
+.mg-step p{font-size:.85rem;color:var(--mut2);line-height:1.6}
+.mg-divider-line{max-width:1200px;margin:0 auto;padding:0 24px 56px;display:flex;align-items:center;gap:16px;color:var(--mut);font-size:.7rem;font-family:"DM Mono",monospace;letter-spacing:.1em;text-transform:uppercase;}
+.mg-divider-line::before,.mg-divider-line::after{content:"";flex:1;height:1px;background:var(--brd)}
 
-/* Cards */
-.rounded-xl.border.bg-\[\#141417\].border-\[\#242428\]{
-  background:#0f0f12!important;border-color:#1a1a1f!important;
-  transition:border-color .25s,transform .25s,box-shadow .25s!important;
-  position:relative;overflow:hidden;}
-.rounded-xl.border.bg-\[\#141417\].border-\[\#242428\]:hover{
-  border-color:rgba(34,197,94,.25)!important;
-  transform:translateY(-2px)!important;
-  box-shadow:0 8px 32px rgba(34,197,94,.08)!important;}
+/* React root reskin — NO hiding */
+.min-h-screen.bg-\[\#0C0C0E\]{background:transparent!important}
+.min-h-screen.bg-\[\#0C0C0E\].p-4{padding:0!important}
+/* The max-w-4xl inner block will be hidden by JS after hydration via class */
+.mg-react-top-hidden{display:none!important}
+/* Upload container restyled */
+.max-w-2xl.mx-auto.space-y-6{max-width:680px!important;margin:0 auto!important;padding:0 20px 56px!important;position:relative;z-index:1;}
+.rounded-xl.border.bg-\[\#141417\].border-\[\#242428\]{background:var(--surf)!important;border-color:var(--brd)!important;border-radius:16px!important;transition:all .25s!important;}
+.rounded-xl.border.bg-\[\#141417\].border-\[\#242428\]:hover{border-color:rgba(34,197,94,.22)!important;transform:translateY(-2px)!important;box-shadow:0 8px 32px rgba(34,197,94,.07)!important;}
+.border-2.border-dashed.rounded-lg{background:rgba(34,197,94,.02)!important;}
+.border-l-4.border-l-yellow-500{background:rgba(245,158,11,.03)!important;border-left:3px solid #F59E0B!important;border-top:none!important;border-right:none!important;border-bottom:none!important;border-radius:0 12px 12px 0!important;}
 
-/* Upload card dashed border */
-.border-2.border-dashed.rounded-lg{
-  background:rgba(34,197,94,.02)!important;}
+/* Analysis label */
+#mg-analysis-label{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:0 20px 24px;}
+#mg-analysis-label .ey{font-family:"DM Mono",monospace;font-size:.7rem;letter-spacing:.2em;color:var(--mut);text-transform:uppercase;margin-bottom:10px;}
+#mg-analysis-label h2{font-family:"Bebas Neue",sans-serif;font-size:clamp(2rem,4vw,2.8rem);letter-spacing:.04em;background:linear-gradient(135deg,#fff,var(--mut2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 
-/* Warning box */
-.border-l-4.border-l-yellow-500{
-  background:rgba(245,158,11,.03)!important;
-  border-color:rgba(245,158,11,.15)!important;
-  border-left:3px solid #F59E0B!important;}
-
-/* Broker button */
+/* Broker */
 #mg-broker-wrap{text-align:center;margin:20px 0 8px;}
-#mg-broker-btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:10px;
-  background:linear-gradient(135deg,#22C55E,#16A34A);
-  color:#fff;border:none;border-radius:10px;
-  padding:13px 32px;font-family:'DM Sans',sans-serif;
-  font-size:1rem;font-weight:700;cursor:pointer;
-  text-decoration:none;
-  box-shadow:0 0 28px rgba(34,197,94,.28),0 4px 14px rgba(0,0,0,.4);
-  transition:all .2s;letter-spacing:.02em;position:relative;overflow:hidden;}
-#mg-broker-btn::before{content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(255,255,255,.1),transparent);}
-#mg-broker-btn:hover{transform:translateY(-2px);
-  box-shadow:0 0 44px rgba(34,197,94,.38),0 8px 24px rgba(0,0,0,.5);}
-#mg-broker-btn svg{width:18px;height:18px;flex-shrink:0;}
+#mg-broker-btn,#mg-broker-analyze{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:10px!important;background:linear-gradient(135deg,var(--g),var(--gd))!important;color:#fff!important;border:none!important;border-radius:12px!important;padding:14px 32px!important;font-family:"DM Sans",sans-serif!important;font-size:1rem!important;font-weight:700!important;cursor:pointer!important;text-decoration:none!important;box-shadow:0 0 32px rgba(34,197,94,.22),0 4px 14px rgba(0,0,0,.35)!important;transition:all .25s!important;letter-spacing:.02em!important;position:relative!important;overflow:hidden!important;}
+#mg-broker-btn:hover,#mg-broker-analyze:hover{transform:translateY(-2px)!important;box-shadow:0 0 48px rgba(34,197,94,.32),0 8px 24px rgba(0,0,0,.45)!important;}
 
-/* ── Timeframe Selector ──────────────────────────── */
-#mg-tf-wrap{
-  max-width:42rem;
-  margin:0 auto 1.5rem;
-  animation:mgFadeIn .3s ease;
-}
+/* Plans teaser */
+#mg-plans-teaser{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 24px 72px;}
+.mg-plans-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.mg-plan-mini{background:var(--surf);border:1px solid var(--brd);border-radius:16px;padding:28px 24px;position:relative;overflow:hidden;transition:all .25s;}
+.mg-plan-mini::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(34,197,94,.1),transparent)}
+.mg-plan-mini:hover{border-color:rgba(34,197,94,.22);transform:translateY(-3px);box-shadow:0 16px 48px rgba(34,197,94,.06)}
+.mg-plan-mini.featured{border-color:rgba(34,197,94,.28);background:linear-gradient(160deg,var(--surf) 0%,rgba(34,197,94,.04) 100%)}
+.mg-plan-mini.featured::before{background:linear-gradient(90deg,transparent,rgba(34,197,94,.45),transparent)}
+.mg-plan-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);color:var(--g);font-size:.68rem;font-weight:700;letter-spacing:.1em;padding:4px 12px;border-radius:99px;margin-bottom:16px;font-family:"DM Mono",monospace;text-transform:uppercase;}
+.mg-plan-tag.gold{background:rgba(245,158,11,.07);border-color:rgba(245,158,11,.2);color:#F59E0B}
+.mg-plan-name{font-family:"Bebas Neue",sans-serif;font-size:2rem;letter-spacing:.04em;margin-bottom:6px;color:var(--txt)}
+.mg-plan-price{display:flex;align-items:flex-end;gap:3px;margin-bottom:16px}
+.mg-plan-currency{font-family:"DM Mono",monospace;font-size:.9rem;color:var(--g);font-weight:600;margin-bottom:8px}
+.mg-plan-amount{font-family:"DM Mono",monospace;font-size:2.6rem;font-weight:700;line-height:1;color:var(--g)}
+.mg-plan-period{font-size:.75rem;color:var(--mut);margin-bottom:6px;line-height:1.3}
+.mg-plan-desc{font-size:.85rem;color:var(--mut2);line-height:1.6;margin-bottom:20px;border-top:1px solid var(--brd);padding-top:16px}
+.mg-plan-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px 22px;border-radius:10px;font-family:"DM Sans",sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;border:none;transition:all .25s;text-decoration:none;}
+.mg-plan-btn-green{background:linear-gradient(135deg,var(--g),var(--gd));color:#fff;box-shadow:0 0 24px rgba(34,197,94,.18),0 4px 12px rgba(0,0,0,.3)}
+.mg-plan-btn-green:hover{transform:translateY(-1px);box-shadow:0 0 36px rgba(34,197,94,.28)}
+.mg-plan-btn-gold{background:linear-gradient(135deg,#F59E0B,#D97706);color:#fff;box-shadow:0 0 24px rgba(245,158,11,.18),0 4px 12px rgba(0,0,0,.3)}
+.mg-plan-btn-gold:hover{transform:translateY(-1px);box-shadow:0 0 36px rgba(245,158,11,.28)}
+
+/* Footer */
+#mg-footer{position:relative;z-index:1;border-top:1px solid var(--brd);padding:32px 24px;font-family:"DM Sans",sans-serif;}
+.mg-footer-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.mg-footer-name{font-family:"Bebas Neue",sans-serif;font-size:1rem;letter-spacing:.1em;color:var(--mut)}
+.mg-footer-links{display:flex;align-items:center;gap:20px}
+.mg-footer-links a{color:var(--mut);font-size:.78rem;text-decoration:none;transition:color .2s}
+.mg-footer-links a:hover{color:var(--txt)}
+.mg-footer-note{color:var(--mut);font-size:.72rem;opacity:.7;text-align:center;flex-basis:100%}
+
+/* TF selector */
+#mg-tf-wrap{max-width:42rem;margin:0 auto 1.5rem;animation:mgFadeIn .3s ease;}
 @keyframes mgFadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
-#mg-tf-inner{
-  background:#141417;
-  border:1px solid #242428;
-  border-radius:0.75rem;
-  padding:1.5rem;
+#mg-tf-inner{background:var(--surf)!important;border:1px solid var(--brd)!important;border-radius:14px!important;padding:1.5rem!important;}
+.mg-tf-head{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem;}
+.mg-tf-head svg{color:var(--g);flex-shrink:0;}
+.mg-tf-head span{font-size:1rem;font-weight:600;color:var(--txt);}
+.mg-tf-sub{color:var(--mut2);font-size:.85rem;margin-bottom:1.1rem;}
+#mg-tf-btns{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+.mg-tf-btn{padding:.8rem 0;border-radius:.5rem;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;border:2px solid;background:transparent;letter-spacing:.06em;font-family:"DM Mono",monospace;}
+.mg-active{background:rgba(34,197,94,.1)!important;border-color:var(--g)!important;color:var(--g)!important;}
+.mg-inactive{border-color:var(--brd2)!important;color:var(--mut)!important;}
+.mg-inactive:hover{border-color:rgba(34,197,94,.3)!important;color:var(--mut2)!important;}
+
+@media(max-width:768px){
+  .mg-nav{display:none}
+  #mg-hero{padding:52px 16px 44px}
+  .mg-features-grid{grid-template-columns:1fr}
+  .mg-steps{grid-template-columns:1fr 1fr}
+  .mg-plans-row{grid-template-columns:1fr}
+  .mg-footer-inner{flex-direction:column;text-align:center}
+  .mg-footer-links{justify-content:center}
 }
-.mg-tf-head{
-  display:flex;align-items:center;gap:0.5rem;
-  margin-bottom:0.5rem;
-}
-.mg-tf-head svg{color:#22C55E;flex-shrink:0;}
-.mg-tf-head span{font-size:1rem;font-weight:600;color:#fff;}
-.mg-tf-sub{color:#9ca3af;font-size:0.85rem;margin-bottom:1.1rem;}
-#mg-tf-btns{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;}
-.mg-tf-btn{
-  padding:0.8rem 0;border-radius:0.5rem;font-size:1rem;
-  font-weight:700;cursor:pointer;transition:all .2s;
-  border:2px solid;background:transparent;letter-spacing:.04em;
-}
-.mg-active{background:rgba(34,197,94,.15);border-color:#22C55E;color:#22C55E;}
-.mg-inactive{border-color:#374151;color:#6b7280;}
-.mg-inactive:hover{border-color:#4b5563;color:#9ca3af;}
 </style></head><body class="__className_f367f3 bg-[#0C0C0E] text-white min-h-screen"><div class="min-h-screen bg-[#0C0C0E] p-4"><div class="space-y-12"><div class="max-w-4xl mx-auto space-y-8"><div class="text-center space-y-4 pt-8"><div class="flex items-center justify-center gap-3 mb-4"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dollar-sign h-8 w-8 text-[#22C55E]"><line x1="12" x2="12" y1="2" y2="22"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg><h1 class="text-4xl font-bold bg-gradient-to-r from-[#22C55E] to-[#16A34A] bg-clip-text text-transparent">MR. GREEN</h1>
 </div><p class="text-xl text-gray-300 max-w-2xl mx-auto">Análise técnica profissional de gráficos com motor institucional avançado. Envie um print do seu gráfico e receba relatórios técnicos de nível Wall Street.</p></div><div class="grid md:grid-cols-3 gap-6"><div class="rounded-xl border text-card-foreground shadow bg-[#141417] border-[#242428]"><div class="flex flex-col space-y-1.5 p-6 text-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chart-column h-8 w-8 text-[#22C55E] mx-auto mb-2"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg><div class="font-semibold leading-none tracking-tight text-white">Análise Institucional</div></div><div class="p-6 pt-0"><p class="text-gray-400 text-center">5 fases de análise com indicadores técnicos: Bollinger, MACD, RSI, EMA/SMA e OBV</p></div></div><div class="rounded-xl border text-card-foreground shadow bg-[#141417] border-[#242428]"><div class="flex flex-col space-y-1.5 p-6 text-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trending-up h-8 w-8 text-[#22C55E] mx-auto mb-2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg><div class="font-semibold leading-none tracking-tight text-white">Relatórios Profissionais</div></div><div class="p-6 pt-0"><p class="text-gray-400 text-center">Sinais COMPRA/VENDA com confiabilidade dinâmica e análise de padrões de mercado</p></div></div><div class="rounded-xl border text-card-foreground shadow bg-[#141417] border-[#242428]"><div class="flex flex-col space-y-1.5 p-6 text-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dollar-sign h-8 w-8 text-[#22C55E] mx-auto mb-2"><line x1="12" x2="12" y1="2" y2="22"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg><div class="font-semibold leading-none tracking-tight text-white">Motor Institucional</div></div><div class="p-6 pt-0"><p class="text-gray-400 text-center">Processamento de nível profissional sem dependências externas, variações dinâmicas</p></div></div></div><div class="rounded-xl border text-card-foreground shadow bg-[#141417] border-[#242428] border-l-4 border-l-yellow-500"><div class="flex flex-col space-y-1.5 p-6"><div class="flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert h-5 w-5 text-yellow-500"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg><div class="font-semibold tracking-tight text-yellow-500 text-lg">Aviso Importante</div></div></div><div class="p-6 pt-0"><div class="space-y-2"><p class="text-gray-300"><strong>Conteúdo educacional:</strong> Este sistema fornece análises técnicas simuladas para fins educacionais.</p><p class="text-gray-300"><strong>Você decide e executa:</strong> Todas as decisões de trading são de sua responsabilidade.</p><p class="text-gray-300"><strong>Sem garantias:</strong> Não há garantias de resultado. Trading envolve riscos significativos.</p></div></div></div></div><div class="max-w-2xl mx-auto space-y-6"><div class="rounded-xl border text-card-foreground shadow bg-[#141417] border-[#242428]"><div class="flex flex-col space-y-1.5 p-6"><div class="font-semibold leading-none tracking-tight text-white flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload h-5 w-5 text-[#22C55E]"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" x2="12" y1="3" y2="15"></line></svg>Selecionar Gráfico para Análise</div><div class="text-sm text-gray-400">Formatos: PNG/JPG • Máx: 2 MB • Mín: 900×600</div></div><div class="p-6 pt-0"><div class="border-2 border-dashed rounded-lg p-8 text-center transition-colors border-[#242428] hover:border-[#22C55E]/50"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image h-12 w-12 text-gray-400 mx-auto mb-4"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg><p class="text-gray-300 mb-4">Arraste seu gráfico aqui ou clique para selecionar</p><p class="text-sm text-gray-500 mb-4">Dica: mantenha candles, eixos e barra superior visíveis</p><input type="file" accept="image/png,image/jpeg,image/jpg" class="hidden" id="file-input"><label for="file-input"><span class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border bg-background shadow-sm h-9 px-4 py-2 border-[#22C55E] text-[#22C55E] hover:bg-[#22C55E] hover:text-white cursor-pointer">Selecionar Arquivo</span></label></div></div></div></div></div></div><script src="js/webpack-80b1d124ec145803.js" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n2:I[9776,[\"177\",\"static/chunks/app/layout-7d226019e797eb97.js\"],\"TradingProvider\"]\n3:I[464,[],\"\"]\n4:I[6950,[],\"\"]\n5:I[8077,[],\"ClientPageRoot\"]\n6:I[1736,[\"880\",\"static/chunks/880-d6ae298848f42cad.js\",\"974\",\"static/chunks/app/page-824e9864b055145c.js\"],\"default\"]\n9:I[4880,[],\"OutletBoundary\"]\nc:I[4880,[],\"ViewportBoundary\"]\ne:I[4880,[],\"MetadataBoundary\"]\n10:I[6751,[],\"\"]\n:HL[\"/_next/static/media/e4af272ccee01ff0-s.p.woff2\",\"font\",{\"crossOrigin\":\"\",\"type\":\"font/woff2\"}]\n:HL[\"/_next/static/css/65cd5c3497cc4293.css\",\"style\"]\n"])</script><script>self.__next_f.push([1,"0:{\"P\":null,\"b\":\"NqFIeP98DGKY_4hyhKaQl\",\"p\":\"\",\"c\":[\"\",\"\"],\"i\":false,\"f\":[[[\"\",{\"children\":[\"__PAGE__\",{}]},\"$undefined\",\"$undefined\",true],[\"\",[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/65cd5c3497cc4293.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"pt-BR\",\"className\":\"dark\",\"children\":[\"$\",\"body\",null,{\"className\":\"__className_f367f3 bg-[#0C0C0E] text-white min-h-screen\",\"children\":[\"$\",\"$L2\",null,{\"children\":[\"$\",\"$L3\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[[\"$\",\"title\",null,{\"children\":\"404: This page could not be found.\"}],[\"$\",\"div\",null,{\"style\":{\"fontFamily\":\"system-ui,\\\"Segoe UI\\\",Roboto,Helvetica,Arial,sans-serif,\\\"Apple Color Emoji\\\",\\\"Segoe UI Emoji\\\"\",\"height\":\"100vh\",\"textAlign\":\"center\",\"display\":\"flex\",\"flexDirection\":\"column\",\"alignItems\":\"center\",\"justifyContent\":\"center\"},\"children\":[\"$\",\"div\",null,{\"children\":[[\"$\",\"style\",null,{\"dangerouslySetInnerHTML\":{\"__html\":\"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}\"}}],[\"$\",\"h1\",null,{\"className\":\"next-error-h1\",\"style\":{\"display\":\"inline-block\",\"margin\":\"0 20px 0 0\",\"padding\":\"0 23px 0 0\",\"fontSize\":24,\"fontWeight\":500,\"verticalAlign\":\"top\",\"lineHeight\":\"49px\"},\"children\":404}],[\"$\",\"div\",null,{\"style\":{\"display\":\"inline-block\"},\"children\":[\"$\",\"h2\",null,{\"style\":{\"fontSize\":14,\"fontWeight\":400,\"lineHeight\":\"49px\",\"margin\":0},\"children\":\"This page could not be found.\"}]}]]}]}]],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}]}]]}],{\"children\":[\"__PAGE__\",[\"$\",\"$1\",\"c\",{\"children\":[[\"$\",\"$L5\",null,{\"Component\":\"$6\",\"searchParams\":{},\"params\":{},\"promises\":[\"$@7\",\"$@8\"]}],\"$undefined\",null,[\"$\",\"$L9\",null,{\"children\":[\"$La\",\"$Lb\",null]}]]}],{},null,false]},null,false],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$1\",\"yP7g3p8PGlZmrMx6IpybJ\",{\"children\":[[\"$\",\"$Lc\",null,{\"children\":\"$Ld\"}],[\"$\",\"meta\",null,{\"name\":\"next-size-adjust\",\"content\":\"\"}]]}],[\"$\",\"$Le\",null,{\"children\":\"$Lf\"}]]}],false]],\"m\":\"$undefined\",\"G\":[\"$10\",\"$undefined\"],\"s\":false,\"S\":true}\n"])</script><script>self.__next_f.push([1,"7:{}\n8:{}\n"])</script><script>self.__next_f.push([1,"d:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\na:null\n"])</script><script>self.__next_f.push([1,"b:null\nf:[[\"$\",\"title\",\"0\",{\"children\":\"IA de Trading por Print\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"Análise inteligente de gráficos de trading com IA\"}],[\"$\",\"link\",\"2\",{\"rel\":\"icon\",\"href\":\"/favicon.ico\",\"type\":\"image/x-icon\",\"sizes\":\"16x16\"}]]\n"])</script>
 <script>
 (function(){
-  /* ─ estado ─ */
+  /* ─ HERO HTML to inject before React root ─ */
+  var HEADER_HTML = '<header id="mg-site-header"><div class="hinner"><a href="#" class="mg-brand"><span class="dot"></span><span class="bname">MR. GREEN</span><span class="badge">Trading Terminal</span></a><nav class="mg-nav"><a href="#mg-features">Recursos</a><a href="#mg-how">Como funciona</a><a href="paywall.html">Planos</a><a href="https://trade.vornabroker.com/register?aff=822269&aff_model=revenue&afftrack=" target="_blank" rel="noopener">Corretora</a></nav><div class="mg-hactions"><button class="mg-hbtn-ghost" onclick="typeof MgOpen!==\'undefined\'?MgOpen():null">Entrar</button><a href="paywall.html" class="mg-hbtn-solid">Trial 24h gr\u00e1tis</a></div></div></header>';
+
+  var TICKER_HTML = '<div id="mg-ticker"><div class="ticker-track"><div class="ticker-item"><span class="ticker-pair">EUR/USD</span><span class="ticker-price">1.0842</span><span class="ticker-change up">+0.21%</span></div><div class="ticker-item"><span class="ticker-pair">GBP/USD</span><span class="ticker-price">1.2674</span><span class="ticker-change dn">-0.08%</span></div><div class="ticker-item"><span class="ticker-pair">USD/JPY</span><span class="ticker-price">151.32</span><span class="ticker-change up">+0.44%</span></div><div class="ticker-item"><span class="ticker-pair">BTC/USDT</span><span class="ticker-price">67,420</span><span class="ticker-change up">+1.82%</span></div><div class="ticker-item"><span class="ticker-pair">ETH/USDT</span><span class="ticker-price">3,124</span><span class="ticker-change up">+0.97%</span></div><div class="ticker-item"><span class="ticker-pair">XAU/USD</span><span class="ticker-price">2,348</span><span class="ticker-change dn">-0.15%</span></div><div class="ticker-item"><span class="ticker-pair">NASDAQ</span><span class="ticker-price">18,254</span><span class="ticker-change up">+0.61%</span></div><div class="ticker-item"><span class="ticker-pair">S&amp;P500</span><span class="ticker-price">5,478</span><span class="ticker-change up">+0.28%</span></div><div class="ticker-item"><span class="ticker-pair">EUR/USD</span><span class="ticker-price">1.0842</span><span class="ticker-change up">+0.21%</span></div><div class="ticker-item"><span class="ticker-pair">GBP/USD</span><span class="ticker-price">1.2674</span><span class="ticker-change dn">-0.08%</span></div><div class="ticker-item"><span class="ticker-pair">USD/JPY</span><span class="ticker-price">151.32</span><span class="ticker-change up">+0.44%</span></div><div class="ticker-item"><span class="ticker-pair">BTC/USDT</span><span class="ticker-price">67,420</span><span class="ticker-change up">+1.82%</span></div><div class="ticker-item"><span class="ticker-pair">ETH/USDT</span><span class="ticker-price">3,124</span><span class="ticker-change up">+0.97%</span></div><div class="ticker-item"><span class="ticker-pair">XAU/USD</span><span class="ticker-price">2,348</span><span class="ticker-change dn">-0.15%</span></div><div class="ticker-item"><span class="ticker-pair">NASDAQ</span><span class="ticker-price">18,254</span><span class="ticker-change up">+0.61%</span></div><div class="ticker-item"><span class="ticker-pair">S&amp;P500</span><span class="ticker-price">5,478</span><span class="ticker-change up">+0.28%</span></div></div></div>';
+
+  var HERO_HTML = '<section id="mg-hero"><div class="mg-eyebrow"><span class="live-dot"></span>Motor institucional online</div><h1 class="mg-hero-title">An\u00e1lise t\u00e9cnica<br>de n\u00edvel Wall Street<br>a partir de um print.</h1><p class="mg-hero-sub">Envie a foto do seu gr\u00e1fico e o MR. GREEN devolve um relat\u00f3rio completo em segundos: <strong>Bollinger, MACD, RSI, EMA/SMA, OBV</strong>, veredito de opera\u00e7\u00e3o e score de confiabilidade.</p><div class="mg-hero-ctas"><a href="paywall.html" class="mg-cta-primary"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z\"/></svg>Come\u00e7ar trial 24h gr\u00e1tis</a><a href=\"https://trade.vornabroker.com/register?aff=822269&aff_model=revenue&afftrack=\" target=\"_blank\" rel=\"noopener\" class=\"mg-cta-secondary\">Abrir conta na corretora</a><a href=\"paywall.html\" class=\"mg-cta-secondary\">Ver planos \u2192</a></div><div class=\"mg-live-card\"><div class=\"mg-live-header\"><span class=\"mg-live-path\">mr.green / analysis / EURUSD-M5</span><span class=\"mg-live-badge\">\u25cf LIVE</span></div><div class=\"mg-live-grid\"><div class=\"mg-live-item\"><div class=\"mg-live-label\">Par</div><div class=\"mg-live-val\">EUR/USD</div></div><div class=\"mg-live-item\"><div class=\"mg-live-label\">Timeframe</div><div class=\"mg-live-val\">M5</div></div><div class=\"mg-live-item\"><div class=\"mg-live-label\">Veredito</div><div class=\"mg-live-val buy\">COMPRA</div></div><div class=\"mg-live-item\"><div class=\"mg-live-label\">RSI(14)</div><div class=\"mg-live-val green\">32.1</div></div></div><div class=\"mg-confidence\"><div class=\"mg-conf-label\">Confiabilidade</div><div class=\"mg-conf-bar-bg\"><div class=\"mg-conf-bar\"></div></div><div class=\"mg-conf-num\">87.4%</div></div></div></section>';
+
+  var FEATURES_HTML = '<section id="mg-features"><div class="mg-section-eyebrow">// recursos</div><h2 class="mg-section-title">Constru\u00eddo para quem opera de verdade.</h2><div class="mg-features-grid"><div class="mg-feature"><div class="mg-feature-icon"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 3v16a2 2 0 0 0 2 2h16\"/><path d=\"M18 17V9\"/><path d=\"M13 17V5\"/><path d=\"M8 17v-3\"/></svg></div><h3>Motor institucional</h3><p>5 fases de an\u00e1lise rodando em paralelo \u2014 pr\u00e9-processamento, extra\u00e7\u00e3o de candles, c\u00e1lculo de indicadores, converg\u00eancia e veredito.</p></div><div class="mg-feature"><div class="mg-feature-icon"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"22 7 13.5 15.5 8.5 10.5 2 17\"/><polyline points=\"16 7 22 7 22 13\"/></svg></div><h3>5 indicadores t\u00e9cnicos</h3><p>Bollinger Bands, MACD, RSI(14), EMA 9/21 e OBV combinados em um \u00fanico score de confiabilidade din\u00e2mico.</p></div><div class="mg-feature"><div class="mg-feature-icon"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><polyline points=\"12 6 12 12 16 14\"/></svg></div><h3>Veredito COMPRA / VENDA</h3><p>Score din\u00e2mico de 55% a 92% com base na converg\u00eancia real entre os indicadores.</p></div><div class="mg-feature"><div class="mg-feature-icon"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M3 9h18\"/><path d=\"M9 21V9\"/></svg></div><h3>2 timeframes</h3><p>Opere em M1 ou M5. Cada timeframe \u00e9 analisado com pesos pr\u00f3prios para m\u00e1xima precis\u00e3o no veredito.</p></div><div class="mg-feature"><div class="mg-feature-icon"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z\"/><polyline points=\"14 2 14 8 20 8\"/><line x1=\"16\" x2=\"8\" y1=\"13\" y2=\"13\"/><line x1=\"16\" x2=\"8\" y1=\"17\" y2=\"17\"/></svg></div><h3>Relat\u00f3rio profissional</h3><p>Veredito, confiabilidade e justificativa de cada indicador num s\u00f3 painel. Pronto para sua mesa de opera\u00e7\u00e3o.</p></div><div class="mg-feature"><div class="mg-feature-icon"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M13 2L3 14h9l-1 8 10-12h-9l1-8z\"/></svg></div><h3>An\u00e1lise em segundos</h3><p>Sem depend\u00eancias externas, sem chamadas a APIs lentas. Resultado em menos de 3 segundos.</p></div></div></section>';
+
+  var HOW_HTML = '<div class="mg-divider-line">// fluxo de opera\u00e7\u00e3o</div><section id="mg-how"><h2 class="mg-section-title">Do print \u00e0 decis\u00e3o em 3 segundos.</h2><div class="mg-steps"><div class="mg-step"><div class="mg-step-num">01</div><h3>Selecione o timeframe</h3><p>Escolha M1 ou M5 antes de enviar o gr\u00e1fico.</p></div><div class="mg-step"><div class="mg-step-num">02</div><h3>Envie o print do gr\u00e1fico</h3><p>Arraste e solte (PNG/JPG). Mantenha candles, eixos e barra superior vis\u00edveis.</p></div><div class="mg-step"><div class="mg-step-num">03</div><h3>Receba o relat\u00f3rio</h3><p>Veredito COMPRA/VENDA, confiabilidade e justificativa de cada indicador em segundos.</p></div><div class="mg-step"><div class="mg-step-num">04</div><h3>Decida e execute</h3><p>Voc\u00ea \u00e9 o trader \u2014 o MR. GREEN \u00e9 seu copiloto t\u00e9cnico.</p></div></div></section>';
+
+  var ANALYSIS_LABEL_HTML = '<div class="mg-divider-line">// an\u00e1lise por print</div><div id="mg-analysis-label"><div class="ey">motor institucional</div><h2>Envie seu gr\u00e1fico para an\u00e1lise.</h2></div>';
+
+  var PLANS_HTML = '<div class="mg-divider-line">// planos de acesso</div><section id="mg-plans-teaser"><h2 class="mg-section-title">Escolha o seu plano.</h2><div class="mg-plans-row"><div class="mg-plan-mini"><div class="mg-plan-tag">\ud83d\udcc5 mensal</div><div class="mg-plan-name">Mensal</div><div class="mg-plan-price"><span class="mg-plan-currency">R$</span><span class="mg-plan-amount">57</span><span class="mg-plan-period">/m\u00eas<br>renova\u00e7\u00e3o autom\u00e1tica</span></div><p class="mg-plan-desc">Acesso completo por 30 dias. Ideal para traders que querem testar e escalar.</p><a href=\"paywall.html\" class=\"mg-plan-btn mg-plan-btn-green\">Assinar Mensal \u2192</a></div><div class=\"mg-plan-mini featured\"><div class=\"mg-plan-tag gold\">\u267e\ufe0f vital\u00edcio</div><div class=\"mg-plan-name\">Vital\u00edcio</div><div class=\"mg-plan-price\"><span class=\"mg-plan-currency\">R$</span><span class=\"mg-plan-amount\">84</span><span class=\"mg-plan-period\">\u00fanico<br>acesso para sempre</span></div><p class=\"mg-plan-desc\">Pague uma vez, use para sempre. Melhor custo-benef\u00edcio para traders s\u00e9rios.</p><a href=\"paywall.html\" class=\"mg-plan-btn mg-plan-btn-gold\">Garantir Vital\u00edcio \u2192</a></div></div><p style=\"text-align:center;margin-top:20px;font-size:.8rem;color:var(--mut)\">Pagamento seguro via PerfectPay \u00b7 SSL 256-bit</p></section>';
+
+  var FOOTER_HTML = '<footer id="mg-footer"><div class="mg-footer-inner"><span class="mg-footer-name">MR. GREEN \u00b7 Trading Terminal</span><nav class="mg-footer-links"><a href="#mg-features">Recursos</a><a href="paywall.html">Planos</a><a href=\"https://trade.vornabroker.com/register?aff=822269&aff_model=revenue&afftrack=\" target=\"_blank\" rel=\"noopener\">Corretora</a></nav><div class=\"mg-footer-note\">MR. GREEN \u00e9 uma ferramenta de an\u00e1lise t\u00e9cnica educacional. N\u00e3o somos uma corretora e n\u00e3o oferecemos recomenda\u00e7\u00e3o de investimento.<br>\u00a9 2026 MR. GREEN \u00b7 Trading Terminal</div></div></footer>';
+
+  /* ─ estado timeframe ─ */
   window.mgTF = 1;
 
-  /* ─ muda seleção ─ */
   window.mgSelectTF = function(min){
     window.mgTF = min;
     var b1 = document.getElementById('mg-btn-1');
@@ -325,8 +418,7 @@ h1.text-4xl{
     b5.className = 'mg-tf-btn ' + (min===5?'mg-active':'mg-inactive');
   };
 
-  /* ─ monta o HTML do card ─ */
-  function buildCard(){
+  function buildTFCard(){
     var w = document.createElement('div');
     w.id = 'mg-tf-wrap';
     w.innerHTML =
@@ -335,9 +427,9 @@ h1.text-4xl{
       +'<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"'
       +' fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
       +'<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'
-      +'<span>Selecione o Timeframe da Operação</span>'
+      +'<span>Selecione o Timeframe da Opera\u00e7\u00e3o</span>'
       +'</div>'
-      +'<p class="mg-tf-sub">Escolha o tempo de expiração antes de enviar o gráfico para análise.</p>'
+      +'<p class="mg-tf-sub">Escolha o tempo de expira\u00e7\u00e3o antes de enviar o gr\u00e1fico para an\u00e1lise.</p>'
       +'<div id="mg-tf-btns">'
       +'<button id="mg-btn-1" class="mg-tf-btn mg-active" onclick="mgSelectTF(1)">1 MIN</button>'
       +'<button id="mg-btn-5" class="mg-tf-btn mg-inactive" onclick="mgSelectTF(5)">5 MIN</button>'
@@ -346,9 +438,7 @@ h1.text-4xl{
     return w;
   }
 
-  /* ─ encontra onde inserir (após max-w-4xl, antes max-w-2xl) ─ */
-  function findAnchor(){
-    /* O bloco max-w-4xl contém "Aviso Importante" */
+  function findTFAnchor(){
     var els = document.querySelectorAll('.max-w-4xl');
     for(var i=0;i<els.length;i++){
       if(els[i].textContent.indexOf('Aviso Importante')!==-1) return els[i];
@@ -356,37 +446,27 @@ h1.text-4xl{
     return null;
   }
 
-  /* ─ insere o card ─ */
-  function injectCard(){
-    if(document.getElementById('mg-tf-wrap')) return; // já existe
-    var anchor = findAnchor();
+  function injectTFCard(){
+    if(document.getElementById('mg-tf-wrap')) return;
+    var anchor = findTFAnchor();
     if(!anchor) return;
     var parent = anchor.parentNode;
     if(!parent) return;
-    var card = buildCard();
-    /* insere logo após o bloco max-w-4xl */
-    var next = anchor.nextSibling;
-    parent.insertBefore(card, next);
-    /* restaura seleção visual */
+    parent.insertBefore(buildTFCard(), anchor.nextSibling);
     window.mgSelectTF(window.mgTF);
   }
 
-  /* ─ corrige labels no relatório ─ */
   function patchReport(){
     var label = window.mgTF===1?'1MIN':'5MIN';
     document.querySelectorAll('p.text-sm.text-gray-400').forEach(function(el){
       var t = el.textContent.trim();
       if(t==='Timeframe'||t==='Validade'){
         var sib = el.nextElementSibling;
-        if(sib && (sib.textContent.trim()==='1MIN'||sib.textContent.trim()==='5MIN')){
-          sib.textContent = label;
-        }
+        if(sib && (sib.textContent.trim()==='1MIN'||sib.textContent.trim()==='5MIN')) sib.textContent = label;
       }
     });
   }
 
-  /* ─ observer: re-injeta se React remover o card ─ */
-  /* ─ botão corretora ao lado do analisar ─ */
   function injectBrokerAnalyze(){
     if(document.getElementById('mg-broker-analyze')) return;
     var analyzeBtn = document.querySelector('button.w-full.bg-gradient-to-r');
@@ -394,52 +474,51 @@ h1.text-4xl{
     var parent = analyzeBtn.parentNode;
     if(!parent) return;
     var a = document.createElement('a');
-    a.id   = 'mg-broker-analyze';
+    a.id = 'mg-broker-analyze';
     a.href = 'https://trade.vornabroker.com/register?aff=822269&aff_model=revenue&afftrack=';
-    a.target = '_blank';
-    a.rel    = 'noopener';
-    a.style.cssText = [
-      'display:flex','align-items:center','justify-content:center','gap:10px',
-      'background:linear-gradient(135deg,#22C55E,#16A34A)',
-      'color:#fff','border:none','border-radius:10px',
-      'padding:14px 24px',"font-family:'DM Sans',sans-serif",
-      'font-size:1rem','font-weight:700','cursor:pointer',
-      'text-decoration:none','width:100%',
-      'box-shadow:0 0 28px rgba(34,197,94,.28),0 4px 14px rgba(0,0,0,.4)',
-      'transition:all .2s','letter-spacing:.02em'
-    ].join(';');
-    a.innerHTML =
-      '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"'
-      +' fill="none" stroke="currentColor" stroke-width="2.5"'
-      +' stroke-linecap="round" stroke-linejoin="round">'
-      +'<path d="M18 8h1a4 4 0 0 1 0 8h-1"/>'
-      +'<path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>'
-      +'<line x1="6" x2="6" y1="1" y2="4"/>'
-      +'<line x1="10" x2="10" y1="1" y2="4"/>'
-      +'<line x1="14" x2="14" y1="1" y2="4"/>'
-      +'</svg>'
-      +'Acessar Corretora';
-    a.onmouseover = function(){ this.style.transform='translateY(-2px)'; this.style.boxShadow='0 0 44px rgba(34,197,94,.38),0 8px 24px rgba(0,0,0,.5)'; };
-    a.onmouseout  = function(){ this.style.transform='';                  this.style.boxShadow='0 0 28px rgba(34,197,94,.28),0 4px 14px rgba(0,0,0,.4)'; };
+    a.target = '_blank'; a.rel = 'noopener';
+    a.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" x2="6" y1="1" y2="4"/><line x1="10" x2="10" y1="1" y2="4"/><line x1="14" x2="14" y1="1" y2="4"/></svg>Acessar Corretora';
     parent.insertBefore(a, analyzeBtn.nextSibling);
   }
 
+  /* ─ Inject all new sections around React root ─ */
+  var mgInjectedLayout = false;
+  function injectLayout(){
+    if(mgInjectedLayout) return;
+    var reactRoot = document.querySelector('.min-h-screen.bg-\[\#0C0C0E\]');
+    if(!reactRoot) return;
+    // Check React has hydrated (upload card is present)
+    if(!reactRoot.querySelector('.max-w-2xl')) return;
+    mgInjectedLayout = true;
+
+    // 1. Hide the top block (title, 3 cards, warning) — React already hydrated so safe
+    var topBlock = reactRoot.querySelector('.max-w-4xl');
+    if(topBlock) topBlock.classList.add('mg-react-top-hidden');
+
+    // 2. Inject before React root
+    reactRoot.insertAdjacentHTML('beforebegin',
+      HEADER_HTML + TICKER_HTML + HERO_HTML + FEATURES_HTML + HOW_HTML + ANALYSIS_LABEL_HTML
+    );
+
+    // 3. Inject after React root
+    reactRoot.insertAdjacentHTML('afterend', PLANS_HTML + FOOTER_HTML);
+  }
+
+  /* ─ MutationObserver watches for React hydration ─ */
   var obs = new MutationObserver(function(){
     patchReport();
     injectBrokerAnalyze();
+    injectLayout();
     if(!document.getElementById('mg-tf-wrap')){
       obs.disconnect();
-      injectCard();
-      /* reconecta após React terminar sua reconciliação */
-      setTimeout(function(){
-        obs.observe(document.body,{childList:true,subtree:true});
-      },80);
+      injectTFCard();
+      setTimeout(function(){ obs.observe(document.body,{childList:true,subtree:true}); }, 80);
     }
   });
 
-  /* ─ aguarda React hidratar (tipicamente ~300-600 ms) antes de agir ─ */
   function start(){
-    injectCard();
+    injectTFCard();
+    injectLayout();
     obs.observe(document.body,{childList:true,subtree:true});
   }
 
