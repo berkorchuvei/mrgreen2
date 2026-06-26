@@ -485,30 +485,37 @@ body::after{content:"";position:fixed;top:-280px;left:50%;transform:translateX(-
   var mgInjectedLayout = false;
   function injectLayout(){
     if(mgInjectedLayout) return;
-    var reactRoot = document.querySelector('.min-h-screen.bg-\[\#0C0C0E\]');
-    if(!reactRoot) return;
-    // Check React has hydrated (upload card is present)
-    if(!reactRoot.querySelector('.max-w-2xl')) return;
+    if(document.getElementById('mg-land-overlay')) return;
     mgInjectedLayout = true;
 
-    // 1. Hide the top block (title, 3 cards, warning) — React already hydrated so safe
-    var topBlock = reactRoot.querySelector('.max-w-4xl');
-    if(topBlock) topBlock.classList.add('mg-react-top-hidden');
+    /*
+     * FIX: O React gerencia <body>, então qualquer elemento inserido como
+     * filho de <body> é removido durante a reconciliação (hidratação).
+     * A solução: append no <html> (document.documentElement) — o React
+     * nunca toca em elementos fora do seu root (<body>), então o overlay
+     * sobrevive à hidratação sem precisar de re-injeção.
+     */
+    var overlay = document.createElement('div');
+    overlay.id = 'mg-land-overlay';
+    overlay.style.cssText = [
+      'position:fixed','top:0','left:0','right:0','bottom:0',
+      'z-index:99999','overflow-y:auto','background:#04090e',
+      'color:#ddeeff'
+    ].join(';');
+    overlay.innerHTML =
+      HEADER_HTML + TICKER_HTML + HERO_HTML +
+      FEATURES_HTML + HOW_HTML +
+      ANALYSIS_LABEL_HTML +
+      PLANS_HTML + FOOTER_HTML;
 
-    // 2. Inject before React root
-    reactRoot.insertAdjacentHTML('beforebegin',
-      HEADER_HTML + TICKER_HTML + HERO_HTML + FEATURES_HTML + HOW_HTML + ANALYSIS_LABEL_HTML
-    );
-
-    // 3. Inject after React root
-    reactRoot.insertAdjacentHTML('afterend', PLANS_HTML + FOOTER_HTML);
+    /* Append to <html>, NOT <body> — React-safe */
+    document.documentElement.appendChild(overlay);
   }
 
   /* ─ MutationObserver watches for React hydration ─ */
   var obs = new MutationObserver(function(){
     patchReport();
     injectBrokerAnalyze();
-    injectLayout();
     if(!document.getElementById('mg-tf-wrap')){
       obs.disconnect();
       injectTFCard();
@@ -518,10 +525,16 @@ body::after{content:"";position:fixed;top:-280px;left:50%;transform:translateX(-
 
   function start(){
     injectTFCard();
-    injectLayout();
     obs.observe(document.body,{childList:true,subtree:true});
   }
 
+  /* Inject landing overlay IMMEDIATELY — before React gets a chance to hydrate.
+     Since the overlay goes into document.documentElement (html element),
+     React's body-scoped reconciliation cannot remove it. */
+  injectLayout();
+
+  /* Tool enhancements (timeframe card, broker btn) still need 600ms
+     for React to hydrate the analysis section first. */
   if(document.readyState==='complete'){
     setTimeout(start, 600);
   } else {
