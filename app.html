@@ -251,9 +251,10 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   .nav-user{display:none}
 }
 @media(max-width:420px){
-  #app-nav{padding:0 12px;gap:8px}
-  .nav-name{font-size:1rem}
-  .nav-btn{padding:6px 10px;font-size:.72rem}
+  #app-nav{padding:0 10px;gap:6px}
+  .nav-name{font-size:.95rem}
+  .nav-plan{display:none}
+  .nav-btn{padding:6px 8px;font-size:.68rem}
   .app-wrap{padding:24px 14px 60px}
   .app-h1{font-size:1.9rem}
   .cfg-card{padding:16px}
@@ -274,6 +275,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   <div class="nav-right">
     <span class="nav-user" id="nav-user"></span>
     <span class="nav-plan" id="nav-plan"></span>
+    <a class="nav-btn" href="aulas.html">🎓 Aulas</a>
     <a class="nav-btn" href="paywall.html">Planos</a>
     <button class="nav-btn" id="btn-logout">Sair</button>
   </div>
