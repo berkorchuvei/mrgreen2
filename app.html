@@ -135,6 +135,48 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .tool-disc p{font-size:.79rem;color:var(--txt2);line-height:1.6}
 .tool-disc strong{color:var(--txt)}
 
+/* GERENCIAMENTO DE BANCA */
+.cfg-opt{font-size:.68rem;color:var(--txt3);font-weight:500;text-transform:none;letter-spacing:0}
+.mgmt-intro{font-size:.82rem;color:var(--txt2);line-height:1.65;margin-bottom:16px}
+.mgmt-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+.mgmt-field{display:flex;flex-direction:column;gap:6px}
+.mgmt-field span{font-size:.7rem;color:var(--txt2);font-family:'JetBrains Mono',monospace;
+  text-transform:uppercase;letter-spacing:.05em}
+.mgmt-field input{background:var(--surf);border:1px solid var(--brd2);border-radius:3px;
+  color:var(--txt);padding:10px 12px;font-size:.9rem;font-family:'JetBrains Mono',monospace;
+  width:100%}
+.mgmt-field input:focus{outline:none;border-color:var(--gold)}
+.mgmt-field input::placeholder{color:var(--txt3)}
+.btn-mgmt-calc{width:100%;background:none;border:1px solid var(--brd3);color:var(--txt);
+  border-radius:3px;padding:12px;font-size:.88rem;font-weight:600;cursor:pointer;
+  transition:all .2s;font-family:inherit;margin-bottom:4px}
+.btn-mgmt-calc:hover{border-color:var(--gold);color:var(--gold2)}
+.mgmt-result{margin-top:18px;padding-top:18px;border-top:1px solid var(--brd)}
+.mgmt-result-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.mgmt-result-box{border-radius:3px;padding:14px;text-align:center;border:1px solid}
+.mgmt-result-box.win{background:var(--grna);border-color:rgba(63,174,103,.3)}
+.mgmt-result-box.loss{background:var(--reda);border-color:rgba(194,91,87,.3)}
+.mrb-lbl{font-size:.7rem;color:var(--txt2);margin-bottom:6px}
+.mrb-val{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700}
+.mgmt-result-box.win .mrb-val{color:var(--green)}
+.mgmt-result-box.loss .mrb-val{color:var(--red)}
+.mrb-sub{font-size:.68rem;color:var(--txt2);margin-top:4px;font-family:'JetBrains Mono',monospace}
+.mgmt-suggest{background:var(--surf);border:1px solid var(--brd2);border-radius:3px;padding:14px}
+.ms-head{font-size:.72rem;color:var(--txt2);text-transform:uppercase;letter-spacing:.05em;
+  font-family:'JetBrains Mono',monospace;margin-bottom:10px}
+.ms-body{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.ms-badge{font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;
+  padding:4px 11px;border-radius:99px}
+.ms-badge.low{background:var(--grna);color:var(--green);border:1px solid rgba(63,174,103,.3)}
+.ms-badge.med{background:rgba(201,143,47,.12);color:var(--amber);border:1px solid rgba(201,143,47,.3)}
+.ms-badge.hi{background:var(--reda);color:var(--red);border:1px solid rgba(194,91,87,.3)}
+.ms-desc{font-size:.8rem;color:var(--txt2);flex:1}
+.ms-apply{width:100%;background:none;border:1px solid var(--brd3);color:var(--txt2);
+  border-radius:3px;padding:9px;font-size:.78rem;font-weight:600;cursor:pointer;
+  transition:all .2s;font-family:inherit}
+.ms-apply:hover{border-color:var(--gold);color:var(--gold2)}
+@media(max-width:480px){.mgmt-grid{grid-template-columns:1fr}.mgmt-result-row{grid-template-columns:1fr}}
+
 /* LOADING */
 #loading-box{display:none;background:var(--card);border:1px solid var(--brd2);
   border-radius:3px;padding:36px 24px;text-align:center;margin-bottom:16px;
@@ -312,10 +354,57 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
     </div>
   </div>
 
+  <!-- 4. GERENCIAMENTO DE BANCA -->
+  <div class="cfg-card">
+    <div class="cfg-label"><div class="cfg-num">4</div> Gerenciamento de Banca <span class="cfg-opt">(opcional)</span></div>
+    <p class="mgmt-intro">Simule sua banca fictícia para entender, na prática, como funciona controle de risco: até onde ir no lucro (stop win) e até onde parar no prejuízo (stop loss).</p>
+
+    <div class="mgmt-grid">
+      <label class="mgmt-field">
+        <span>Banca (R$)</span>
+        <input type="number" id="mgmt-banca" inputmode="decimal" placeholder="Ex: 200" min="0" step="0.01">
+      </label>
+      <label class="mgmt-field">
+        <span>Stop Win (%)</span>
+        <input type="number" id="mgmt-swin" inputmode="decimal" placeholder="Ex: 20" min="0" step="0.1">
+      </label>
+      <label class="mgmt-field">
+        <span>Stop Loss (%)</span>
+        <input type="number" id="mgmt-sloss" inputmode="decimal" placeholder="Ex: 15" min="0" step="0.1">
+      </label>
+    </div>
+
+    <button class="btn-mgmt-calc" onclick="calcMgmt()">Calcular</button>
+
+    <div class="mgmt-result" id="mgmt-result" style="display:none">
+      <div class="mgmt-result-row">
+        <div class="mgmt-result-box win">
+          <div class="mrb-lbl">🎯 Stop Win</div>
+          <div class="mrb-val" id="mgmt-win-val">—</div>
+          <div class="mrb-sub" id="mgmt-win-sub">—</div>
+        </div>
+        <div class="mgmt-result-box loss">
+          <div class="mrb-lbl">🛑 Stop Loss</div>
+          <div class="mrb-val" id="mgmt-loss-val">—</div>
+          <div class="mrb-sub" id="mgmt-loss-sub">—</div>
+        </div>
+      </div>
+
+      <div class="mgmt-suggest" id="mgmt-suggest">
+        <div class="ms-head">Estratégia sugerida para esta banca</div>
+        <div class="ms-body">
+          <span class="ms-badge" id="ms-badge">—</span>
+          <span class="ms-desc" id="ms-desc">—</span>
+        </div>
+        <button class="ms-apply" id="ms-apply" onclick="applySuggested()">Aplicar esta estratégia acima ↑</button>
+      </div>
+    </div>
+  </div>
+
   <button class="btn-generate" id="btn-gen" onclick="generate()">✦ Buscar Sinal</button>
 
   <div class="tool-disc">
-    <p><strong>⚠️ Aviso:</strong> Os sinais são gerados com fins <strong>exclusivamente educacionais</strong>. Não constituem recomendação de investimento. Trading envolve risco real de perda de capital.</p>
+    <p><strong>⚠️ Aviso:</strong> Os sinais são gerados com fins <strong>exclusivamente educacionais</strong>. Não constituem recomendação de investimento. Trading envolve risco real de perda de capital. Os cálculos de banca acima são simulações matemáticas simples, não recomendação financeira.</p>
   </div>
 
   <!-- PLACAR PESSOAL -->
@@ -435,11 +524,6 @@ function warnDrag(e){
   }
 })();
 
-document.getElementById('btn-logout').onclick=function(){
-  localStorage.removeItem(SK);localStorage.removeItem(TK);
-  window.location.href='index.html';
-};
-
 /* ── HORÁRIO DE MERCADO ──────────────────────── */
 /* Forex "mercado aberto" funciona 24h, de domingo 22:00 UTC até sexta 22:00 UTC.
    Fora dessa janela (fim de semana), só o mercado OTC está disponível. */
@@ -480,6 +564,72 @@ function setMkt(v){
 }
 function setTF(v){tf=v;document.querySelectorAll('.tf-btn').forEach(function(b){b.classList.toggle('on',b.dataset.tf===v);});}
 function setStrat(v){strat=v;document.querySelectorAll('.strat-card').forEach(function(c){c.classList.toggle('on',c.dataset.s===v);});}
+
+/* ── GERENCIAMENTO DE BANCA ─────────────────── */
+var fmtBRL = new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});
+var lastSuggested = null;
+
+function calcMgmt(){
+  var banca = parseFloat(document.getElementById('mgmt-banca').value);
+  var swin = parseFloat(document.getElementById('mgmt-swin').value);
+  var sloss = parseFloat(document.getElementById('mgmt-sloss').value);
+
+  if(!banca || banca <= 0 || isNaN(swin) || isNaN(sloss) || swin < 0 || sloss < 0){
+    alert('Preencha a banca e as porcentagens de stop win / stop loss com valores válidos.');
+    return;
+  }
+
+  var winTarget = banca * (1 + swin/100);
+  var winGain = winTarget - banca;
+  var lossTarget = banca * (1 - sloss/100);
+  var lossAmount = banca - lossTarget;
+
+  document.getElementById('mgmt-win-val').textContent = fmtBRL.format(winTarget);
+  document.getElementById('mgmt-win-sub').textContent = '+' + fmtBRL.format(winGain) + ' de lucro';
+  document.getElementById('mgmt-loss-val').textContent = fmtBRL.format(Math.max(lossTarget,0));
+  document.getElementById('mgmt-loss-sub').textContent = '-' + fmtBRL.format(lossAmount) + ' de perda';
+
+  /* Estratégia sugerida por faixa de banca */
+  var badge = document.getElementById('ms-badge');
+  var desc = document.getElementById('ms-desc');
+  badge.className = 'ms-badge';
+
+  if(banca >= 50 && banca <= 150){
+    lastSuggested = 'nogale';
+    badge.classList.add('low');
+    badge.textContent = 'Conservador · Sem Gale';
+    desc.textContent = 'Com essa banca, faz mais sentido priorizar entradas únicas, sem recuperação — preserva a banca por mais tempo.';
+  } else if(banca >= 151 && banca < 500){
+    lastSuggested = '1gale';
+    badge.classList.add('med');
+    badge.textContent = 'Moderado · 1 Gale';
+    desc.textContent = 'Banca um pouco maior comporta uma recuperação (1 Gale) sem comprometer tanto o total em caso de erro.';
+  } else if(banca >= 500){
+    lastSuggested = '2gale';
+    badge.classList.add('hi');
+    badge.textContent = 'Agressivo · 2 Gales — não recomendado';
+    desc.textContent = 'Tecnicamente a banca suporta 2 Gales, mas é a estratégia de maior risco — uma sequência de erros pode consumir boa parte da banca rapidamente.';
+  } else {
+    lastSuggested = 'nogale';
+    badge.classList.add('low');
+    badge.textContent = 'Conservador · Sem Gale';
+    desc.textContent = 'Banca abaixo de R$ 50 — o mais indicado é operar sem Gale, com valores de entrada bem pequenos, só para fins de experiência.';
+  }
+
+  document.getElementById('mgmt-result').style.display = 'block';
+}
+
+function applySuggested(){
+  if(lastSuggested){
+    setStrat(lastSuggested);
+    document.querySelector('.strat-grid').scrollIntoView({behavior:'smooth', block:'center'});
+  }
+}
+
+document.getElementById('btn-logout').onclick=function(){
+  localStorage.removeItem(SK);localStorage.removeItem(TK);
+  window.location.href='index.html';
+};
 
 /* ── SIGNAL GENERATOR (local, no API needed) ─ */
 var ATIVOS_ABERTO = ['EUR/USD','GBP/USD','USD/JPY','AUD/USD','USD/CAD','EUR/GBP','GBP/JPY','USD/CHF','EUR/JPY','NZD/USD'];
