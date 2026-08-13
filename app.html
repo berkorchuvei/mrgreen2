@@ -135,6 +135,29 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .tool-disc p{font-size:.79rem;color:var(--txt2);line-height:1.6}
 .tool-disc strong{color:var(--txt)}
 
+/* STRATEGY INDICATOR */
+.strat-indicator{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  background:var(--surf);border:1px solid var(--brd2);border-radius:3px;
+  padding:10px 14px;margin-bottom:14px;font-size:.78rem;color:var(--txt2)}
+.strat-indicator strong{color:var(--gold2)}
+.strat-indicator-link{color:var(--txt2);text-decoration:none;font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;white-space:nowrap;flex-shrink:0}
+.strat-indicator-link:hover{color:var(--gold2)}
+
+/* MENU DE ATALHOS */
+.menu-list{display:flex;flex-direction:column;gap:10px;margin-top:28px}
+.menu-item{display:flex;align-items:center;gap:12px;background:var(--card);
+  border:1px solid var(--brd);border-radius:3px;padding:15px 16px;
+  text-decoration:none;color:var(--txt);transition:all .2s}
+.menu-item:hover{border-color:var(--brd3);background:var(--surf)}
+.mi-icon{width:34px;height:34px;border-radius:3px;display:flex;align-items:center;
+  justify-content:center;font-size:1.05rem;flex-shrink:0;border:1px solid}
+.mi-icon.mi-blue{background:rgba(75,85,99,.15);border-color:rgba(107,114,128,.3)}
+.mi-icon.mi-green{background:var(--grna);border-color:rgba(63,174,103,.3)}
+.mi-icon.mi-gold{background:var(--golda);border-color:rgba(184,146,63,.35)}
+.mi-label{flex:1;font-size:.9rem;font-weight:600}
+.mi-arrow{color:var(--txt3);font-size:.9rem;flex-shrink:0}
+
 /* GERENCIAMENTO DE BANCA */
 .cfg-opt{font-size:.68rem;color:var(--txt3);font-weight:500;text-transform:none;letter-spacing:0}
 .mgmt-intro{font-size:.82rem;color:var(--txt2);line-height:1.65;margin-bottom:16px}
@@ -334,103 +357,34 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
     </div>
   </div>
 
-  <!-- 3. STRATEGY -->
-  <div class="cfg-card">
-    <div class="cfg-label"><div class="cfg-num">3</div> Estratégia de Entrada</div>
-    <div class="strat-grid">
-      <div class="strat-card on" data-s="nogale" onclick="setStrat('nogale')">
-        <div class="sc-icon">🛡️</div><div class="sc-name">Sem Gale</div>
-        <div class="sc-risk risk-low">Conservador</div>
-        <div class="sc-desc">Entrada única. Risco mínimo de banca.</div>
-      </div>
-      <div class="strat-card" data-s="1gale" onclick="setStrat('1gale')">
-        <div class="sc-icon">⚖️</div><div class="sc-name">1 Gale</div>
-        <div class="sc-risk risk-med">Moderado</div>
-        <div class="sc-desc">Entrada + recuperação com 2x o valor.</div>
-      </div>
-      <div class="strat-card" data-s="2gale" onclick="setStrat('2gale')">
-        <div class="sc-icon">🔥</div><div class="sc-name">2 Gales</div>
-        <div class="sc-risk risk-hi">Agressivo</div>
-        <div class="sc-desc">Entrada + 2x + 4x. Alto risco de banca.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 4. GERENCIAMENTO DE BANCA -->
-  <div class="cfg-card">
-    <div class="cfg-label"><div class="cfg-num">4</div> Gerenciamento de Banca <span class="cfg-opt">(opcional)</span></div>
-    <p class="mgmt-intro">Simule sua banca fictícia para entender, na prática, como funciona controle de risco: até onde ir no lucro (stop win) e até onde parar no prejuízo (stop loss).</p>
-
-    <div class="mgmt-grid">
-      <label class="mgmt-field">
-        <span>Banca (R$)</span>
-        <input type="number" id="mgmt-banca" inputmode="decimal" placeholder="Ex: 200" min="0" step="0.01">
-      </label>
-      <label class="mgmt-field">
-        <span>Stop Win (%)</span>
-        <input type="number" id="mgmt-swin" inputmode="decimal" placeholder="Ex: 20" min="0" step="0.1">
-      </label>
-      <label class="mgmt-field">
-        <span>Stop Loss (%)</span>
-        <input type="number" id="mgmt-sloss" inputmode="decimal" placeholder="Ex: 15" min="0" step="0.1">
-      </label>
-    </div>
-
-    <button class="btn-mgmt-calc" onclick="calcMgmt()">Calcular</button>
-
-    <div class="mgmt-result" id="mgmt-result" style="display:none">
-      <div class="mgmt-result-row">
-        <div class="mgmt-result-box win">
-          <div class="mrb-lbl">🎯 Stop Win</div>
-          <div class="mrb-val" id="mgmt-win-val">—</div>
-          <div class="mrb-sub" id="mgmt-win-sub">—</div>
-        </div>
-        <div class="mgmt-result-box loss">
-          <div class="mrb-lbl">🛑 Stop Loss</div>
-          <div class="mrb-val" id="mgmt-loss-val">—</div>
-          <div class="mrb-sub" id="mgmt-loss-sub">—</div>
-        </div>
-      </div>
-
-      <div class="mgmt-suggest" id="mgmt-suggest">
-        <div class="ms-head">Estratégia sugerida para esta banca</div>
-        <div class="ms-body">
-          <span class="ms-badge" id="ms-badge">—</span>
-          <span class="ms-desc" id="ms-desc">—</span>
-        </div>
-        <button class="ms-apply" id="ms-apply" onclick="applySuggested()">Aplicar esta estratégia acima ↑</button>
-      </div>
-    </div>
+  <div class="strat-indicator" id="strat-indicator">
+    <span id="strat-indicator-text">Utilize no máximo até <strong>2 Martingales</strong></span>
+    <a href="gerenciamento.html" class="strat-indicator-link">alterar →</a>
   </div>
 
   <button class="btn-generate" id="btn-gen" onclick="generate()">✦ Buscar Sinal</button>
 
   <div class="tool-disc">
-    <p><strong>⚠️ Aviso:</strong> Os sinais são gerados com fins <strong>exclusivamente educacionais</strong>. Não constituem recomendação de investimento. Trading envolve risco real de perda de capital. Os cálculos de banca acima são simulações matemáticas simples, não recomendação financeira.</p>
+    <p><strong>⚠️ Aviso:</strong> Os sinais são gerados com fins <strong>exclusivamente educacionais</strong>. Não constituem recomendação de investimento. Trading envolve risco real de perda de capital.</p>
   </div>
 
-  <!-- PLACAR PESSOAL -->
-  <div class="cfg-card" id="placar-card">
-    <div class="cfg-label"><div class="cfg-num">✦</div> Placar Pessoal (opcional)</div>
-    <p style="font-size:.82rem;color:var(--txt2);line-height:1.65;margin-bottom:14px">
-      Um placar simples para você mesmo marcar se cada acompanhamento foi acerto ou erro. Os dados ficam salvos apenas no seu navegador — ninguém mais tem acesso a eles.
-    </p>
-
-    <div id="placar-desktop">
-      <a id="placar-bookmarklet" href="#" class="btn-broker-top" style="margin-bottom:8px" onclick="return warnDrag(event)">
-        📌 Meu Placar (arraste para os favoritos)
-      </a>
-      <p style="font-size:.72rem;color:var(--txt3);line-height:1.6;margin-bottom:14px">
-        Arraste o botão para a barra de favoritos do navegador. Depois, clique nele em qualquer aba (inclusive na corretora) para abrir seu placar numa janelinha, que você pode posicionar em qualquer lugar da tela.
-      </p>
-    </div>
-
-    <a href="placar.html" target="_blank" rel="noopener" class="btn-new" style="display:block;text-align:center;text-decoration:none">
-      📊 Abrir Meu Placar em nova aba
+  <!-- MENU DE ATALHOS -->
+  <div class="menu-list">
+    <a href="gerenciamento.html" class="menu-item">
+      <span class="mi-icon mi-blue">⚙️</span>
+      <span class="mi-label">Gerenciamento</span>
+      <span class="mi-arrow">→</span>
     </a>
-    <p style="font-size:.72rem;color:var(--txt3);line-height:1.6;margin-top:10px" id="placar-mobile-note">
-      No celular, abra nessa nova aba e use o menu do navegador para <strong>adicionar à tela de início</strong> — assim você acessa seu placar quase como um app, com um toque, sem precisar voltar aqui.
-    </p>
+    <a href="aulas.html" class="menu-item">
+      <span class="mi-icon mi-green">🎓</span>
+      <span class="mi-label">Biblioteca de Aulas</span>
+      <span class="mi-arrow">→</span>
+    </a>
+    <a href="placar.html" target="_blank" rel="noopener" class="menu-item">
+      <span class="mi-icon mi-gold">📊</span>
+      <span class="mi-label">Meu Placar</span>
+      <span class="mi-arrow">→</span>
+    </a>
   </div>
 
   <!-- LOADING -->
@@ -505,27 +459,6 @@ var SK='mns_session', TK='mns_trial', TMS=24*3600000;
   }
 })();
 
-function warnDrag(e){
-  e.preventDefault();
-  alert('Arraste este botão para a barra de favoritos do navegador (não clique). Depois é só clicar nele em qualquer aba para abrir seu placar numa janelinha.');
-  return false;
-}
-
-/* build bookmarklet with THIS site's own origin baked in, so it always
-   points to the same placar.html regardless of which tab it's clicked from */
-(function(){
-  var target = window.location.origin + '/placar.html';
-  var code = "(function(){var w=window.open('"+target+"','mgzPlacarWin','width=320,height=600,left=80,top=80,resizable=yes,scrollbars=yes');if(w)w.focus();})();";
-  var link = document.getElementById('placar-bookmarklet');
-  if(link) link.href = 'javascript:' + encodeURIComponent(code);
-
-  /* on touch devices, dragging to bookmarks bar isn't practical — hide that option */
-  if(window.matchMedia && window.matchMedia('(pointer:coarse)').matches){
-    var d = document.getElementById('placar-desktop');
-    if(d) d.style.display='none';
-  }
-})();
-
 /* ── HORÁRIO DE MERCADO ──────────────────────── */
 /* Forex "mercado aberto" funciona 24h, de domingo 22:00 UTC até sexta 22:00 UTC.
    Fora dessa janela (fim de semana), só o mercado OTC está disponível. */
@@ -558,75 +491,18 @@ function updateMarketAvailability(){
   }
 }
 
+/* ── CONFIG COMPARTILHADA (definida em gerenciamento.html) ── */
+function loadCfg(){
+  try{ return JSON.parse(localStorage.getItem('mgz_config')) || {}; }catch(e){ return {}; }
+}
+
 /* ── TOOL STATE ──────────────────────────────── */
-var mkt='aberto', tf='M5', strat='nogale';
+var mkt='aberto', tf='M5', strat=loadCfg().strat || 'nogale';
 function setMkt(v){
   if(v==='aberto' && !isForexOpen()) return; /* bloqueia seleção de mercado fechado */
   mkt=v;document.querySelectorAll('.mkt-card').forEach(function(c){c.classList.toggle('on',c.dataset.m===v);});
 }
 function setTF(v){tf=v;document.querySelectorAll('.tf-btn').forEach(function(b){b.classList.toggle('on',b.dataset.tf===v);});}
-function setStrat(v){strat=v;document.querySelectorAll('.strat-card').forEach(function(c){c.classList.toggle('on',c.dataset.s===v);});}
-
-/* ── GERENCIAMENTO DE BANCA ─────────────────── */
-var fmtBRL = new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});
-var lastSuggested = null;
-
-function calcMgmt(){
-  var banca = parseFloat(document.getElementById('mgmt-banca').value);
-  var swin = parseFloat(document.getElementById('mgmt-swin').value);
-  var sloss = parseFloat(document.getElementById('mgmt-sloss').value);
-
-  if(!banca || banca <= 0 || isNaN(swin) || isNaN(sloss) || swin < 0 || sloss < 0){
-    alert('Preencha a banca e as porcentagens de stop win / stop loss com valores válidos.');
-    return;
-  }
-
-  var winTarget = banca * (1 + swin/100);
-  var winGain = winTarget - banca;
-  var lossTarget = banca * (1 - sloss/100);
-  var lossAmount = banca - lossTarget;
-
-  document.getElementById('mgmt-win-val').textContent = fmtBRL.format(winTarget);
-  document.getElementById('mgmt-win-sub').textContent = '+' + fmtBRL.format(winGain) + ' de lucro';
-  document.getElementById('mgmt-loss-val').textContent = fmtBRL.format(Math.max(lossTarget,0));
-  document.getElementById('mgmt-loss-sub').textContent = '-' + fmtBRL.format(lossAmount) + ' de perda';
-
-  /* Estratégia sugerida por faixa de banca */
-  var badge = document.getElementById('ms-badge');
-  var desc = document.getElementById('ms-desc');
-  badge.className = 'ms-badge';
-
-  if(banca >= 50 && banca <= 150){
-    lastSuggested = 'nogale';
-    badge.classList.add('low');
-    badge.textContent = 'Conservador · Sem Gale';
-    desc.textContent = 'Com essa banca, faz mais sentido priorizar entradas únicas, sem recuperação — preserva a banca por mais tempo.';
-  } else if(banca >= 151 && banca < 500){
-    lastSuggested = '1gale';
-    badge.classList.add('med');
-    badge.textContent = 'Moderado · 1 Gale';
-    desc.textContent = 'Banca um pouco maior comporta uma recuperação (1 Gale) sem comprometer tanto o total em caso de erro.';
-  } else if(banca >= 500){
-    lastSuggested = '2gale';
-    badge.classList.add('hi');
-    badge.textContent = 'Agressivo · 2 Gales — não recomendado';
-    desc.textContent = 'Tecnicamente a banca suporta 2 Gales, mas é a estratégia de maior risco — uma sequência de erros pode consumir boa parte da banca rapidamente.';
-  } else {
-    lastSuggested = 'nogale';
-    badge.classList.add('low');
-    badge.textContent = 'Conservador · Sem Gale';
-    desc.textContent = 'Banca abaixo de R$ 50 — o mais indicado é operar sem Gale, com valores de entrada bem pequenos, só para fins de experiência.';
-  }
-
-  document.getElementById('mgmt-result').style.display = 'block';
-}
-
-function applySuggested(){
-  if(lastSuggested){
-    setStrat(lastSuggested);
-    document.querySelector('.strat-grid').scrollIntoView({behavior:'smooth', block:'center'});
-  }
-}
 
 document.getElementById('btn-logout').onclick=function(){
   localStorage.removeItem(SK);localStorage.removeItem(TK);
@@ -639,8 +515,22 @@ var ATIVOS_OTC    = ['EUR/USD-OTC','GBP/USD-OTC','USD/JPY-OTC','AUD/USD-OTC','US
 
 function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
+function updateStratIndicator(){
+  var s = loadCfg().strat || 'nogale';
+  var el = document.getElementById('strat-indicator-text');
+  if(!el) return;
+  var map = {
+    nogale: 'Estratégia atual: <strong>Sem Gale</strong> (entrada única)',
+    '1gale': 'Estratégia atual: utilize no máximo até <strong>1 Martingale</strong>',
+    '2gale': 'Estratégia atual: utilize no máximo até <strong>2 Martingales</strong>'
+  };
+  el.innerHTML = map[s] || map.nogale;
+}
+
 updateMarketAvailability();
 setInterval(updateMarketAvailability, 60000);
+updateStratIndicator();
+window.addEventListener('focus', updateStratIndicator); /* atualiza ao voltar da aba de Gerenciamento */
 
 function buildSignal(){
   var ativos = mkt==='otc' ? ATIVOS_OTC : ATIVOS_ABERTO;
@@ -671,6 +561,8 @@ function buildSignal(){
 
 /* ── GENERATE ────────────────────────────────── */
 function generate(){
+  strat = loadCfg().strat || 'nogale'; /* pega a estratégia mais recente definida em Gerenciamento */
+  updateStratIndicator();
   document.getElementById('btn-gen').disabled=true;
   document.getElementById('btn-gen').innerHTML='<span class="btn-spin"></span> Buscando...';
   document.getElementById('loading-box').style.display='block';

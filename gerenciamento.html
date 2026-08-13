@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerenciamento — Mr.Green</title>
+<meta name="theme-color" content="#07070f">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07070f;--bg2:#0b0b18;--surf:#10101f;--card:#14142a;
+  --brd:#1e1e38;--brd2:#2a2a50;--brd3:#35356a;
+  --gold:#b8923f;--gold2:#cfa551;--golda:rgba(184,146,63,.10);--golda2:rgba(184,146,63,.20);
+  --green:#3fae67;--grna:rgba(63,174,103,.12);
+  --red:#c25b57;--reda:rgba(194,91,87,.12);--amber:#c98f2f;
+  --txt:#eee8d8;--txt2:#7a7a9a;--txt3:#3a3a58;
+}
+html,body{background:var(--bg);color:var(--txt);font-family:'Inter',system-ui,sans-serif;
+  font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;min-height:100vh}
+
+/* NAV */
+#app-nav{position:sticky;top:0;z-index:200;height:60px;
+  background:rgba(7,7,15,.9);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--brd);display:flex;align-items:center;padding:0 24px;gap:14px}
+.nav-brand{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0}
+.nav-crown{width:32px;height:32px;border-radius:3px;background:var(--surf);
+  border:1px solid rgba(184,146,63,.4);display:flex;align-items:center;justify-content:center;
+  font-size:.9rem;color:var(--gold2)}
+.nav-name{font-family:'Space Grotesk',sans-serif;font-size:1.05rem;font-weight:700;color:var(--txt)}
+.nav-right{display:flex;align-items:center;gap:10px;margin-left:auto;flex-shrink:0}
+.nav-btn{background:none;border:1px solid var(--brd2);color:var(--txt2);border-radius:2px;
+  padding:6px 13px;font-size:.78rem;font-weight:600;cursor:pointer;transition:all .2s;
+  text-decoration:none;font-family:inherit;display:inline-flex;align-items:center;white-space:nowrap}
+.nav-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+.wrap{max-width:640px;margin:0 auto;padding:36px 20px 70px}
+.pg-eyebrow{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--gold2);margin-bottom:10px}
+.pg-h1{font-family:'Space Grotesk',sans-serif;font-size:1.9rem;font-weight:700;margin-bottom:10px}
+.pg-sub{font-size:.9rem;color:var(--txt2);line-height:1.7;margin-bottom:28px}
+
+.cfg-card{background:var(--card);border:1px solid var(--brd);border-radius:3px;padding:20px;margin-bottom:16px}
+.cfg-label{display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;
+  font-size:.78rem;color:var(--txt2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}
+.cfg-num{width:20px;height:20px;border-radius:50%;background:var(--golda);color:var(--gold2);
+  display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700}
+.cfg-opt{font-size:.68rem;color:var(--txt3);font-weight:500;text-transform:none;letter-spacing:0}
+
+/* STRATEGY CARDS */
+.strat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.strat-card{background:var(--surf);border:2px solid var(--brd);border-radius:3px;
+  padding:16px 10px;text-align:center;cursor:pointer;transition:all .2s}
+.strat-card:hover{border-color:rgba(184,146,63,.3)}
+.strat-card.on{border-color:var(--gold)!important;background:var(--golda)!important}
+.strat-card.on .sc-name{color:var(--gold2)!important}
+.sc-icon{font-size:1.4rem;margin-bottom:6px}
+.sc-name{font-weight:700;font-size:.88rem;margin-bottom:6px}
+.sc-risk{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;
+  padding:2px 9px;border-radius:99px;display:inline-block;margin-bottom:6px}
+.risk-low{background:var(--grna);color:var(--green);border:1px solid rgba(63,174,103,.2)}
+.risk-med{background:rgba(201,143,47,.1);color:var(--amber);border:1px solid rgba(201,143,47,.2)}
+.risk-hi{background:var(--reda);color:var(--red);border:1px solid rgba(194,91,87,.2)}
+.sc-desc{font-size:.72rem;color:var(--txt2);line-height:1.45}
+
+/* MGMT CALC */
+.mgmt-intro{font-size:.82rem;color:var(--txt2);line-height:1.65;margin-bottom:16px}
+.mgmt-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px}
+.mgmt-field{display:flex;flex-direction:column;gap:6px}
+.mgmt-field span{font-size:.7rem;color:var(--txt2);font-family:'JetBrains Mono',monospace;
+  text-transform:uppercase;letter-spacing:.05em}
+.mgmt-field input{background:var(--surf);border:1px solid var(--brd2);border-radius:3px;
+  color:var(--txt);padding:10px 12px;font-size:.9rem;font-family:'JetBrains Mono',monospace;width:100%}
+.mgmt-field input:focus{outline:none;border-color:var(--gold)}
+.mgmt-field input::placeholder{color:var(--txt3)}
+.mgmt-auto-note{font-size:.72rem;color:var(--txt3);line-height:1.6;margin-bottom:14px;
+  display:flex;align-items:center;gap:6px}
+.btn-mgmt-calc{width:100%;background:none;border:1px solid var(--brd3);color:var(--txt);
+  border-radius:3px;padding:12px;font-size:.88rem;font-weight:600;cursor:pointer;
+  transition:all .2s;font-family:inherit;margin-bottom:4px}
+.btn-mgmt-calc:hover{border-color:var(--gold);color:var(--gold2)}
+.mgmt-result{margin-top:18px;padding-top:18px;border-top:1px solid var(--brd)}
+.mgmt-result-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.mgmt-result-box{border-radius:3px;padding:14px;text-align:center;border:1px solid}
+.mgmt-result-box.win{background:var(--grna);border-color:rgba(63,174,103,.3)}
+.mgmt-result-box.loss{background:var(--reda);border-color:rgba(194,91,87,.3)}
+.mrb-lbl{font-size:.7rem;color:var(--txt2);margin-bottom:6px}
+.mrb-val{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700}
+.mgmt-result-box.win .mrb-val{color:var(--green)}
+.mgmt-result-box.loss .mrb-val{color:var(--red)}
+.mrb-sub{font-size:.68rem;color:var(--txt2);margin-top:4px;font-family:'JetBrains Mono',monospace}
+.mgmt-suggest{background:var(--surf);border:1px solid var(--brd2);border-radius:3px;padding:14px}
+.ms-head{font-size:.72rem;color:var(--txt2);text-transform:uppercase;letter-spacing:.05em;
+  font-family:'JetBrains Mono',monospace;margin-bottom:10px}
+.ms-body{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.ms-badge{font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;
+  padding:4px 11px;border-radius:99px}
+.ms-badge.low{background:var(--grna);color:var(--green);border:1px solid rgba(63,174,103,.3)}
+.ms-badge.med{background:rgba(201,143,47,.12);color:var(--amber);border:1px solid rgba(201,143,47,.3)}
+.ms-badge.hi{background:var(--reda);color:var(--red);border:1px solid rgba(194,91,87,.3)}
+.ms-desc{font-size:.8rem;color:var(--txt2);flex:1}
+.ms-apply{width:100%;background:none;border:1px solid var(--brd3);color:var(--txt2);
+  border-radius:3px;padding:9px;font-size:.78rem;font-weight:600;cursor:pointer;
+  transition:all .2s;font-family:inherit}
+.ms-apply:hover{border-color:var(--gold);color:var(--gold2)}
+
+.tool-disc{background:rgba(201,143,47,.06);border:1px solid rgba(251,191,36,.12);
+  border-left:3px solid var(--amber);border-radius:0 3px 3px 0;padding:11px 14px}
+.tool-disc p{font-size:.79rem;color:var(--txt2);line-height:1.6}
+.tool-disc strong{color:var(--txt)}
+
+.saved-note{font-size:.72rem;color:var(--green);text-align:center;margin-top:10px;
+  opacity:0;transition:opacity .3s}
+.saved-note.show{opacity:1}
+
+@media(max-width:480px){
+  #app-nav{padding:0 14px;gap:8px}
+  .wrap{padding:28px 16px 60px}
+  .pg-h1{font-size:1.55rem}
+  .sc-desc{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav id="app-nav">
+  <a href="app.html" class="nav-brand">
+    <div class="nav-crown">▲</div>
+    <span class="nav-name">Mr.Green</span>
+  </a>
+  <div class="nav-right">
+    <a href="app.html" class="nav-btn">← Voltar</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="pg-eyebrow">Configuração</div>
+  <h1 class="pg-h1">Gerenciamento</h1>
+  <p class="pg-sub">Defina como você quer acompanhar os sinais e simule sua banca. Essas escolhas ficam salvas e valem para os próximos sinais gerados.</p>
+
+  <!-- ESTRATÉGIA -->
+  <div class="cfg-card">
+    <div class="cfg-label">Estratégia de Entrada</div>
+    <div class="strat-grid">
+      <div class="strat-card" data-s="nogale" onclick="setStrat('nogale')">
+        <div class="sc-icon">🛡️</div><div class="sc-name">Sem Gale</div>
+        <div class="sc-risk risk-low">Conservador</div>
+        <div class="sc-desc">Entrada única. Risco mínimo de banca.</div>
+      </div>
+      <div class="strat-card" data-s="1gale" onclick="setStrat('1gale')">
+        <div class="sc-icon">⚖️</div><div class="sc-name">1 Gale</div>
+        <div class="sc-risk risk-med">Moderado</div>
+        <div class="sc-desc">Entrada + recuperação com 2x o valor.</div>
+      </div>
+      <div class="strat-card" data-s="2gale" onclick="setStrat('2gale')">
+        <div class="sc-icon">🔥</div><div class="sc-name">2 Gales</div>
+        <div class="sc-risk risk-hi">Agressivo</div>
+        <div class="sc-desc">Entrada + 2x + 4x. Alto risco de banca.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CALCULADORA DE BANCA -->
+  <div class="cfg-card">
+    <div class="cfg-label">Calculadora de Banca</div>
+    <p class="mgmt-intro">Simule sua banca fictícia para entender como funciona controle de risco. O stop loss é calculado automaticamente como <strong style="color:var(--txt)">Stop Win + 5%</strong> — uma margem de segurança padrão.</p>
+
+    <div class="mgmt-grid">
+      <label class="mgmt-field">
+        <span>Banca (R$)</span>
+        <input type="number" id="mgmt-banca" inputmode="decimal" placeholder="Ex: 200" min="0" step="0.01">
+      </label>
+      <label class="mgmt-field">
+        <span>Stop Win (%)</span>
+        <input type="number" id="mgmt-swin" inputmode="decimal" placeholder="Ex: 10" min="0" step="0.1">
+      </label>
+    </div>
+    <div class="mgmt-auto-note">🔒 Stop Loss automático = Stop Win + 5% (não é preciso digitar)</div>
+
+    <button class="btn-mgmt-calc" onclick="calcMgmt()">Calcular</button>
+
+    <div class="mgmt-result" id="mgmt-result" style="display:none">
+      <div class="mgmt-result-row">
+        <div class="mgmt-result-box win">
+          <div class="mrb-lbl">🎯 Stop Win</div>
+          <div class="mrb-val" id="mgmt-win-val">—</div>
+          <div class="mrb-sub" id="mgmt-win-sub">—</div>
+        </div>
+        <div class="mgmt-result-box loss">
+          <div class="mrb-lbl">🛑 Stop Loss</div>
+          <div class="mrb-val" id="mgmt-loss-val">—</div>
+          <div class="mrb-sub" id="mgmt-loss-sub">—</div>
+        </div>
+      </div>
+
+      <div class="mgmt-suggest" id="mgmt-suggest">
+        <div class="ms-head">Estratégia sugerida para esta banca</div>
+        <div class="ms-body">
+          <span class="ms-badge" id="ms-badge">—</span>
+          <span class="ms-desc" id="ms-desc">—</span>
+        </div>
+        <button class="ms-apply" id="ms-apply" onclick="applySuggested()">Aplicar esta estratégia acima ↑</button>
+      </div>
+    </div>
+    <div class="saved-note" id="saved-note">✓ Configuração salva</div>
+  </div>
+
+  <div class="tool-disc">
+    <p><strong>⚠️ Aviso:</strong> Os cálculos acima são simulações matemáticas simples, não recomendação financeira. O Mr.Green é uma ferramenta educacional e não garante lucro.</p>
+  </div>
+</div>
+
+<script>
+var SK='mns_session', TK='mns_trial', TMS=24*3600000;
+(function(){
+  var s; try{s=JSON.parse(localStorage.getItem(SK));}catch(e){s=null;}
+  if(!s){window.location.href='index.html';return;}
+  var t; try{t=JSON.parse(localStorage.getItem(TK));}catch(e){t=null;}
+  var ok=s.plan==='lifetime'
+    ||((s.plan==='monthly'||s.plan==='quarterly')&&s.expires_at&&new Date(s.expires_at)>new Date())
+    ||(t&&(t.start+TMS)>Date.now());
+  if(!ok){window.location.href='paywall.html';return;}
+})();
+
+/* ── CONFIG COMPARTILHADA (via localStorage) ─── */
+var CFG_KEY = 'mgz_config';
+function loadCfg(){
+  try{ return JSON.parse(localStorage.getItem(CFG_KEY)) || {}; }catch(e){ return {}; }
+}
+function saveCfg(patch){
+  var cfg = loadCfg();
+  Object.assign(cfg, patch);
+  localStorage.setItem(CFG_KEY, JSON.stringify(cfg));
+  var n = document.getElementById('saved-note');
+  if(n){ n.classList.add('show'); setTimeout(function(){ n.classList.remove('show'); }, 1500); }
+}
+
+var strat = loadCfg().strat || 'nogale';
+
+function setStrat(v){
+  strat = v;
+  document.querySelectorAll('.strat-card').forEach(function(c){ c.classList.toggle('on', c.dataset.s===v); });
+  saveCfg({ strat: v });
+}
+setStrat(strat);
+
+/* restore saved banca/swin values on load */
+(function(){
+  var cfg = loadCfg();
+  if(cfg.banca) document.getElementById('mgmt-banca').value = cfg.banca;
+  if(cfg.swin) document.getElementById('mgmt-swin').value = cfg.swin;
+  if(cfg.banca && cfg.swin) calcMgmt();
+})();
+
+var fmtBRL = new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});
+var lastSuggested = null;
+
+function calcMgmt(){
+  var banca = parseFloat(document.getElementById('mgmt-banca').value);
+  var swin = parseFloat(document.getElementById('mgmt-swin').value);
+
+  if(!banca || banca <= 0 || isNaN(swin) || swin < 0){
+    alert('Preencha a banca e a porcentagem de stop win com valores válidos.');
+    return;
+  }
+
+  var sloss = swin + 5; /* stop loss automático = stop win + 5% */
+
+  var winTarget = banca * (1 + swin/100);
+  var winGain = winTarget - banca;
+  var lossTarget = banca * (1 - sloss/100);
+  var lossAmount = banca - lossTarget;
+
+  document.getElementById('mgmt-win-val').textContent = fmtBRL.format(winTarget);
+  document.getElementById('mgmt-win-sub').textContent = '+' + fmtBRL.format(winGain) + ' de lucro';
+  document.getElementById('mgmt-loss-val').textContent = fmtBRL.format(Math.max(lossTarget,0));
+  document.getElementById('mgmt-loss-sub').textContent = '-' + fmtBRL.format(lossAmount) + ' de perda (' + sloss.toFixed(1) + '%)';
+
+  var badge = document.getElementById('ms-badge');
+  var desc = document.getElementById('ms-desc');
+  badge.className = 'ms-badge';
+
+  if(banca >= 50 && banca <= 150){
+    lastSuggested = 'nogale';
+    badge.classList.add('low');
+    badge.textContent = 'Conservador · Sem Gale';
+    desc.textContent = 'Com essa banca, faz mais sentido priorizar entradas únicas, sem recuperação — preserva a banca por mais tempo.';
+  } else if(banca >= 151 && banca < 500){
+    lastSuggested = '1gale';
+    badge.classList.add('med');
+    badge.textContent = 'Moderado · 1 Gale';
+    desc.textContent = 'Banca um pouco maior comporta uma recuperação (1 Gale) sem comprometer tanto o total em caso de erro.';
+  } else if(banca >= 500){
+    lastSuggested = '2gale';
+    badge.classList.add('hi');
+    badge.textContent = 'Agressivo · 2 Gales — não recomendado';
+    desc.textContent = 'Tecnicamente a banca suporta 2 Gales, mas é a estratégia de maior risco — uma sequência de erros pode consumir boa parte da banca rapidamente.';
+  } else {
+    lastSuggested = 'nogale';
+    badge.classList.add('low');
+    badge.textContent = 'Conservador · Sem Gale';
+    desc.textContent = 'Banca abaixo de R$ 50 — o mais indicado é operar sem Gale, com valores de entrada bem pequenos, só para fins de experiência.';
+  }
+
+  document.getElementById('mgmt-result').style.display = 'block';
+  saveCfg({ banca: banca, swin: swin, sloss: sloss });
+}
+
+function applySuggested(){
+  if(lastSuggested) setStrat(lastSuggested);
+}
+</script>
+</body>
+</html>
