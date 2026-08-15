@@ -11,15 +11,15 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#07070f;--bg2:#0b0b18;--surf:#10101f;--card:#14142a;
-  --brd:#1e1e38;--brd2:#2a2a50;--brd3:#35356a;
-  --gold:#b8923f;--gold2:#cfa551;--gold3:#ddb968;
-  --golda:rgba(184,146,63,.10);--golda2:rgba(184,146,63,.20);
-  --purple:#4b5563;--purp2:#6b7280;--purpa:rgba(75,85,99,.18);
+  --bg:#060a14;--bg2:#0a0f1e;--surf:#0f1524;--card:#131b2e;
+  --brd:#1c2740;--brd2:#253355;--brd3:#34456f;
+  --gold:#4f8ff5;--gold2:#6fa4ff;--gold3:#9cc4ff;
+  --golda:rgba(79,143,245,.12);--golda2:rgba(79,143,245,.22);
+  --purple:#445269;--purp2:#5b6b8c;--purpa:rgba(68,82,105,.18);
   --cyan:#06b6d4;--cyanas:rgba(6,182,212,.12);
   --green:#3fae67;--grna:rgba(63,174,103,.12);
   --red:#c25b57;--amber:#c98f2f;
-  --txt:#eee8d8;--txt2:#7a7a9a;--txt3:#3a3a58;
+  --txt:#e6ecf5;--txt2:#7d8ba8;--txt3:#33456e;
 }
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--txt);font-family:'Inter',system-ui,sans-serif;
@@ -48,9 +48,9 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   align-items:center;padding:0 28px;gap:20px;
   background:rgba(7,7,15,.85);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
   border-bottom:1px solid var(--brd)}
-.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;color:var(--txt)}
 .nav-crown{width:36px;height:36px;border-radius:3px;
-  background:var(--surf);border:1px solid rgba(184,146,63,.4);
+  background:var(--surf);border:1px solid rgba(79,143,245,.4);
   display:flex;align-items:center;justify-content:center;font-size:1rem;
   color:var(--gold2)}
 .nav-links{display:flex;gap:24px;flex:1;margin-left:8px}
@@ -70,7 +70,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .hero-inner{max-width:1200px;margin:0 auto;width:100%;
   display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
 .hero-badge{display:inline-flex;align-items:center;gap:7px;margin-bottom:20px;
-  background:var(--golda);border:1px solid rgba(201,168,76,.25);color:var(--gold2);
+  background:var(--golda);border:1px solid rgba(79,143,245,.25);color:var(--gold2);
   border-radius:99px;padding:5px 14px;font-family:'JetBrains Mono',monospace;
   font-size:.68rem;letter-spacing:.12em;text-transform:uppercase}
 .hero-dot{width:6px;height:6px;border-radius:50%;background:var(--gold2);
@@ -115,7 +115,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .prev-config{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
 .prev-tag{font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:700;
   padding:4px 10px;border-radius:2px;border:1px solid}
-.pt-gold{background:var(--golda);border-color:rgba(201,168,76,.3);color:var(--gold2)}
+.pt-gold{background:var(--golda);border-color:rgba(79,143,245,.3);color:var(--gold2)}
 .pt-purp{background:var(--purpa);border-color:rgba(139,92,246,.3);color:var(--purp2)}
 .pt-cyan{background:var(--cyanas);border-color:rgba(6,182,212,.3);color:var(--cyan)}
 .prev-result{background:rgba(0,0,0,.35);border:1px solid var(--brd);border-radius:3px;padding:14px;margin-bottom:14px}
@@ -153,9 +153,9 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .feat-card{background:var(--card);border:1px solid var(--brd);border-radius:3px;
   padding:28px 22px;position:relative;overflow:hidden;transition:all .3s}
 .feat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(201,168,76,.15),transparent)}
-.feat-card:hover{border-color:rgba(201,168,76,.2);transform:translateY(-3px);box-shadow:0 1px 2px rgba(0,0,0,.4);height:48px;border-radius:3px;margin-bottom:16px;
-  background:var(--golda);border:1px solid rgba(201,168,76,.2);
+  background:linear-gradient(90deg,transparent,rgba(79,143,245,.15),transparent)}
+.feat-card:hover{border-color:rgba(79,143,245,.2);transform:translateY(-3px);box-shadow:0 1px 2px rgba(0,0,0,.4);height:48px;border-radius:3px;margin-bottom:16px;
+  background:var(--golda);border:1px solid rgba(79,143,245,.2);
   display:flex;align-items:center;justify-content:center;font-size:1.25rem}
 .feat-card h3{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:700;margin-bottom:8px}
 .feat-card p{font-size:.84rem;color:var(--txt2);line-height:1.65}
@@ -164,7 +164,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
 .step-card{padding:24px 16px;text-align:center}
 .step-num{font-family:'Space Grotesk',sans-serif;font-size:3.8rem;font-weight:800;line-height:1;
-  color:rgba(184,146,63,.28);margin-bottom:-4px}
+  color:rgba(79,143,245,.28);margin-bottom:-4px}
 .step-icon{font-size:1.7rem;margin:8px 0 14px}
 .step-card h3{font-family:'Space Grotesk',sans-serif;font-size:.97rem;font-weight:700;margin-bottom:8px}
 .step-card p{font-size:.83rem;color:var(--txt2);line-height:1.62}
@@ -175,9 +175,9 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .plan-card{background:var(--card);border:1px solid var(--brd);border-radius:3px;
   padding:32px 26px;position:relative;overflow:hidden;transition:all .3s}
 .plan-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(201,168,76,.12),transparent)}
-.plan-card.featured{border-color:rgba(201,168,76,.3);
-  background:linear-gradient(160deg,var(--card) 0%,rgba(201,168,76,.04) 100%)}
+  background:linear-gradient(90deg,transparent,rgba(79,143,245,.12),transparent)}
+.plan-card.featured{border-color:rgba(79,143,245,.3);
+  background:linear-gradient(160deg,var(--card) 0%,rgba(79,143,245,.04) 100%)}
 .plan-card.featured::before{background:linear-gradient(90deg,transparent,var(--gold),var(--purp2),transparent)}
 .plan-card:hover{transform:translateY(-3px)}
 .plan-best{position:absolute;top:-12px;left:50%;transform:translateX(-50%);
@@ -244,7 +244,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--brd);padding:26px 
 .modal-close:hover{color:var(--txt)}
 .modal-logo{text-align:center;margin-bottom:24px}
 .modal-crown{width:52px;height:52px;border-radius:3px;margin:0 auto 10px;
-  background:var(--surf);border:1px solid rgba(184,146,63,.4);
+  background:var(--surf);border:1px solid rgba(79,143,245,.4);
   display:flex;align-items:center;justify-content:center;font-size:1.5rem;
   color:var(--gold2)}
 .modal-logo p{font-size:.82rem;color:var(--txt2);margin-top:4px;line-height:1.5}
@@ -308,7 +308,10 @@ footer{position:relative;z-index:1;border-top:1px solid var(--brd);padding:26px 
 
 <nav id="nav">
   <a class="nav-brand" href="index.html">
-    <div class="nav-crown">▲</div>
+    <div class="nav-crown"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block">
+      <path d="M3 17L9 11L13 15L21 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M15 6H21V12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg></div>
     <span class="nav-name">Mr.Green</span>
   </a>
   <div class="nav-links">
@@ -364,7 +367,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--brd);padding:26px 
               <div class="pr-cell"><div class="pr-cell-l">Expiração</div><div class="pr-cell-v">5 min</div></div>
             </div>
           </div>
-          <div style="background:var(--golda);border:1px solid rgba(201,168,76,.15);border-radius:3px;padding:10px 14px;font-size:.8rem;color:var(--gold2);font-family:'JetBrains Mono',monospace">
+          <div style="background:var(--golda);border:1px solid rgba(79,143,245,.15);border-radius:3px;padding:10px 14px;font-size:.8rem;color:var(--gold2);font-family:'JetBrains Mono',monospace">
             🎯 Sinal gerado com base nas configurações selecionadas
           </div>
         </div>
@@ -478,7 +481,10 @@ footer{position:relative;z-index:1;border-top:1px solid var(--brd);padding:26px 
   <div class="modal-card">
     <button class="modal-close" onclick="closeModal()">✕</button>
     <div class="modal-logo">
-      <div class="modal-crown">▲</div>
+      <div class="modal-crown"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block">
+      <path d="M3 17L9 11L13 15L21 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M15 6H21V12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg></div>
       <h2>Mr.Green</h2>
       <p>Digite seu e-mail para acessar a ferramenta</p>
     </div>

@@ -10,13 +10,13 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#07070f;--bg2:#0b0b18;--surf:#10101f;--card:#14142a;--card2:#1a1a35;
-  --brd:#1e1e38;--brd2:#2a2a50;--brd3:#35356a;
-  --gold:#b8923f;--gold2:#cfa551;--gold3:#ddb968;--golda:rgba(184,146,63,.10);--golda2:rgba(184,146,63,.20);
-  --purple:#4b5563;--purp2:#6b7280;--purpa:rgba(75,85,99,.18);
+  --bg:#060a14;--bg2:#0a0f1e;--surf:#0f1524;--card:#131b2e;--card2:#17203a;
+  --brd:#1c2740;--brd2:#253355;--brd3:#34456f;
+  --gold:#4f8ff5;--gold2:#6fa4ff;--gold3:#9cc4ff;--golda:rgba(79,143,245,.12);--golda2:rgba(79,143,245,.22);
+  --purple:#445269;--purp2:#5b6b8c;--purpa:rgba(68,82,105,.18);
   --green:#3fae67;--grna:rgba(63,174,103,.12);
   --red:#c25b57;--amber:#c98f2f;
-  --txt:#eee8d8;--txt2:#7a7a9a;--txt3:#3a3a58;
+  --txt:#e6ecf5;--txt2:#7d8ba8;--txt3:#33456e;
 }
 html,body{background:var(--bg);color:var(--txt);
   font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.65;
@@ -28,9 +28,9 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 #nav{position:sticky;top:0;z-index:200;height:64px;display:flex;align-items:center;
   padding:0 28px;gap:16px;background:rgba(7,7,15,.88);
   backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--brd)}
-.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;color:var(--txt)}
 .nav-crown{width:36px;height:36px;border-radius:3px;
-  background:var(--surf);border:1px solid rgba(184,146,63,.4);
+  background:var(--surf);border:1px solid rgba(79,143,245,.4);
   display:flex;align-items:center;justify-content:center;font-size:1rem;
   color:var(--gold2)}
 .nav-right{display:flex;align-items:center;gap:10px;margin-left:auto}
@@ -42,7 +42,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 /* HERO */
 .pw-hero{position:relative;z-index:1;text-align:center;padding:72px 24px 56px}
 .pw-badge{display:inline-flex;align-items:center;gap:7px;margin-bottom:18px;
-  background:var(--golda);border:1px solid rgba(201,168,76,.22);color:var(--gold2);
+  background:var(--golda);border:1px solid rgba(79,143,245,.22);color:var(--gold2);
   border-radius:99px;padding:5px 14px;font-family:'JetBrains Mono',monospace;
   font-size:.68rem;letter-spacing:.1em;text-transform:uppercase}
 .pw-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--gold2);animation:gdot 2s ease-in-out infinite}
@@ -66,10 +66,10 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .plan-c{background:var(--card);border:1px solid var(--brd);border-radius:3px;
   padding:32px 28px;position:relative;overflow:hidden;transition:all .3s}
 .plan-c::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(201,168,76,.12),transparent)}
+  background:linear-gradient(90deg,transparent,rgba(79,143,245,.12),transparent)}
 .plan-c:hover{transform:translateY(-3px)}
-.plan-c.feat{border-color:rgba(201,168,76,.32);
-  background:linear-gradient(160deg,var(--card) 0%,rgba(201,168,76,.05) 100%)}
+.plan-c.feat{border-color:rgba(79,143,245,.32);
+  background:linear-gradient(160deg,var(--card) 0%,rgba(79,143,245,.05) 100%)}
 .plan-c.feat::before{background:linear-gradient(90deg,transparent,var(--gold),var(--purp2),transparent)}
 .plan-best{position:absolute;top:-12px;left:50%;transform:translateX(-50%);
   background:linear-gradient(135deg,var(--gold),var(--gold2));color:#07070f;
@@ -131,8 +131,8 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .test-card{background:var(--card);border:1px solid var(--brd);border-radius:3px;
   padding:22px 20px;transition:border-color .25s;position:relative;overflow:hidden}
 .test-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(201,168,76,.1),transparent)}
-.test-card:hover{border-color:rgba(201,168,76,.18)}
+  background:linear-gradient(90deg,transparent,rgba(79,143,245,.1),transparent)}
+.test-card:hover{border-color:rgba(79,143,245,.18)}
 .test-stars{color:var(--gold2);font-size:.9rem;letter-spacing:2px;margin-bottom:12px}
 .test-text{font-size:.84rem;color:var(--txt2);line-height:1.7;margin-bottom:16px;font-style:italic}
 .test-author{display:flex;align-items:center;gap:10px}
@@ -148,7 +148,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .faq-inner{max-width:720px;margin:0 auto}
 .faq-list{margin-top:8px}
 .faq-item{border:1px solid var(--brd);border-radius:3px;margin-bottom:8px;overflow:hidden;transition:border-color .2s}
-.faq-item.open{border-color:rgba(201,168,76,.22)}
+.faq-item.open{border-color:rgba(79,143,245,.22)}
 .faq-q{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;
   padding:16px 18px;background:none;border:none;color:var(--txt);font-family:inherit;
   font-size:.9rem;font-weight:600;cursor:pointer;text-align:left}
@@ -192,7 +192,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--brd);padding:26px 
 .modal-close:hover{color:var(--txt)}
 .modal-logo{text-align:center;margin-bottom:22px}
 .modal-crown{width:52px;height:52px;border-radius:3px;margin:0 auto 10px;
-  background:var(--surf);border:1px solid rgba(184,146,63,.4);
+  background:var(--surf);border:1px solid rgba(79,143,245,.4);
   display:flex;align-items:center;justify-content:center;font-size:1.5rem;
   color:var(--gold2)}
 .modal-logo p{font-size:.8rem;color:var(--txt2);margin-top:3px}
@@ -244,8 +244,11 @@ footer{position:relative;z-index:1;border-top:1px solid var(--brd);padding:26px 
 
 <nav id="nav">
   <a class="nav-brand" href="javascript:history.back()">
-    <div class="nav-crown">▲</div>
-    <span class="nav-name">MonarcaSignal</span>
+    <div class="nav-crown"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block">
+      <path d="M3 17L9 11L13 15L21 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M15 6H21V12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg></div>
+    <span class="nav-name">Mr.Green</span>
   </a>
   <div class="nav-right">
     <a class="nav-btn" href="app.html">← Voltar</a>
@@ -446,7 +449,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--brd);padding:26px 
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
-    <div class="footer-logo">MonarcaSignal</div>
+    <div class="footer-logo">Mr.Green</div>
     <div class="footer-links">
       <a href="index.html">Início</a>
       <a href="app.html">Ferramenta</a>
@@ -461,8 +464,11 @@ footer{position:relative;z-index:1;border-top:1px solid var(--brd);padding:26px 
   <div class="modal-card">
     <button class="modal-close" onclick="closeModal()">✕</button>
     <div class="modal-logo">
-      <div class="modal-crown">▲</div>
-      <h2>MonarcaSignal</h2>
+      <div class="modal-crown"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block">
+      <path d="M3 17L9 11L13 15L21 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M15 6H21V12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg></div>
+      <h2>Mr.Green</h2>
       <p>Acesse sua conta para continuar</p>
     </div>
     <div class="field">
