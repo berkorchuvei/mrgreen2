@@ -520,8 +520,18 @@ document.getElementById('btn-logout').onclick=function(){
 };
 
 /* ── SIGNAL GENERATOR (local, no API needed) ─ */
-var ATIVOS_ABERTO = ['EUR/USD','GBP/USD','USD/JPY','AUD/USD','USD/CAD','EUR/GBP','GBP/JPY','USD/CHF','EUR/JPY','NZD/USD'];
-var ATIVOS_OTC    = ['EUR/USD-OTC','GBP/USD-OTC','USD/JPY-OTC','AUD/USD-OTC','USD/CAD-OTC','EUR/GBP-OTC','GBP/JPY-OTC','EUR/JPY-OTC'];
+var ATIVOS_ABERTO = [
+  'EUR/USD','GBP/USD','USD/JPY','AUD/USD','USD/CAD','USD/CHF','NZD/USD',
+  'EUR/GBP','EUR/JPY','GBP/JPY','EUR/CHF','AUD/JPY','CAD/JPY','AUD/CAD',
+  'NZD/JPY','GBP/CAD','EUR/AUD','GBP/AUD','EUR/CAD','CHF/JPY',
+  'BTC/USD','ETH/USD','LTC/USD','XRP/USD','SOL/USD','BNB/USD'
+];
+var ATIVOS_OTC = [
+  'EUR/USD-OTC','GBP/USD-OTC','USD/JPY-OTC','AUD/USD-OTC','USD/CAD-OTC','USD/CHF-OTC','NZD/USD-OTC',
+  'EUR/GBP-OTC','EUR/JPY-OTC','GBP/JPY-OTC','EUR/CHF-OTC','AUD/JPY-OTC','CAD/JPY-OTC','AUD/CAD-OTC',
+  'NZD/JPY-OTC','GBP/CAD-OTC','EUR/AUD-OTC','GBP/AUD-OTC',
+  'BTC/USD-OTC','ETH/USD-OTC','LTC/USD-OTC','XRP/USD-OTC','SOL/USD-OTC','BNB/USD-OTC','ADA/USD-OTC','DOGE/USD-OTC'
+];
 
 function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
@@ -611,22 +621,26 @@ function generate(){
   },1000);
 }
 
-/* ── BANDEIRA DO ATIVO ───────────────────────── */
+/* ── BANDEIRA / ÍCONE DO ATIVO ───────────────── */
 var FLAG_MAP = {
   USD:'🇺🇸', EUR:'🇪🇺', GBP:'🇬🇧', JPY:'🇯🇵', CAD:'🇨🇦',
   AUD:'🇦🇺', CHF:'🇨🇭', NZD:'🇳🇿'
 };
+var CRYPTO_MAP = {
+  BTC:'₿', ETH:'Ξ', LTC:'Ł', XRP:'✕', SOL:'◎', BNB:'🔶', ADA:'₳', DOGE:'Ð'
+};
 function flagForAsset(ativo){
   var clean = ativo.replace('-OTC','').replace(' OTC','');
   var parts = clean.split('/');
-  var quote = parts[1] || parts[0]; // moeda de cotação (segunda do par)
-  return FLAG_MAP[quote] || FLAG_MAP[parts[0]] || '🏳️';
+  var base = parts[0], quote = parts[1] || parts[0];
+  if(CRYPTO_MAP[base]) return CRYPTO_MAP[base]; // par de cripto → símbolo da moeda
+  return FLAG_MAP[quote] || FLAG_MAP[base] || '🏳️';
 }
 
 /* ── SHOW RESULT ─────────────────────────────── */
 function showResult(sig){
   var isCall=sig.direcao==='COMPRA';
-  document.getElementById('res-asset').textContent=sig.ativo;
+  document.getElementById('res-asset').textContent=sig.ativo.replace('-OTC',' (OTC)');
   document.getElementById('res-flag-bg').textContent=flagForAsset(sig.ativo);
   var dirEl=document.getElementById('res-dir');
   dirEl.textContent=isCall?'▲ COMPRA':'▼ VENDA';
