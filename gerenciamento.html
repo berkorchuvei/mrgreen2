@@ -81,6 +81,8 @@ html,body{background:var(--bg);color:var(--txt);font-family:'Inter',system-ui,sa
   border-radius:3px;padding:12px;font-size:.88rem;font-weight:600;cursor:pointer;
   transition:all .2s;font-family:inherit;margin-bottom:4px}
 .btn-mgmt-calc:hover{border-color:var(--gold);color:var(--gold2)}
+.mgmt-error{background:var(--reda);border:1px solid rgba(194,91,87,.3);color:var(--red);
+  border-radius:3px;padding:10px 12px;font-size:.78rem;margin-top:8px;line-height:1.5}
 .mgmt-result{margin-top:18px;padding-top:18px;border-top:1px solid var(--brd)}
 .mgmt-result-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
 .mgmt-result-box{border-radius:3px;padding:14px;text-align:center;border:1px solid}
@@ -173,16 +175,17 @@ html,body{background:var(--bg);color:var(--txt);font-family:'Inter',system-ui,sa
     <div class="mgmt-grid">
       <label class="mgmt-field">
         <span>Banca (R$)</span>
-        <input type="number" id="mgmt-banca" inputmode="decimal" placeholder="Ex: 200" min="0" step="0.01">
+        <input type="text" id="mgmt-banca" inputmode="decimal" placeholder="Ex: 200">
       </label>
       <label class="mgmt-field">
         <span>Stop Win (%)</span>
-        <input type="number" id="mgmt-swin" inputmode="decimal" placeholder="Ex: 10" min="0" step="0.1">
+        <input type="text" id="mgmt-swin" inputmode="decimal" placeholder="Ex: 10">
       </label>
     </div>
     <div class="mgmt-auto-note">🔒 Stop Loss automático = Stop Win + 5% (não é preciso digitar)</div>
 
     <button class="btn-mgmt-calc" onclick="calcMgmt()">Calcular</button>
+    <div class="mgmt-error" id="mgmt-error" style="display:none"></div>
 
     <div class="mgmt-result" id="mgmt-result" style="display:none">
       <div class="mgmt-result-row">
@@ -261,11 +264,20 @@ var fmtBRL = new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});
 var lastSuggested = null;
 
 function calcMgmt(){
-  var banca = parseFloat(document.getElementById('mgmt-banca').value);
-  var swin = parseFloat(document.getElementById('mgmt-swin').value);
+ try{
+  var errEl = document.getElementById('mgmt-error');
+  errEl.style.display = 'none';
+
+  var bancaRaw = document.getElementById('mgmt-banca').value;
+  var swinRaw = document.getElementById('mgmt-swin').value;
+
+  /* aceita vírgula como separador decimal (ex: 10,5 → 10.5) */
+  var banca = parseFloat(String(bancaRaw).replace(',', '.'));
+  var swin = parseFloat(String(swinRaw).replace(',', '.'));
 
   if(!banca || banca <= 0 || isNaN(swin) || swin < 0){
-    alert('Preencha a banca e a porcentagem de stop win com valores válidos.');
+    errEl.textContent = '⚠️ Preencha a banca e a porcentagem de stop win com valores válidos (use ponto para decimais, ex: 10.5).';
+    errEl.style.display = 'block';
     return;
   }
 
@@ -309,6 +321,11 @@ function calcMgmt(){
 
   document.getElementById('mgmt-result').style.display = 'block';
   saveCfg({ banca: banca, swin: swin, sloss: sloss });
+ }catch(e){
+   var errEl2 = document.getElementById('mgmt-error');
+   errEl2.textContent = '⚠️ Ocorreu um erro ao calcular. Recarregue a página e tente novamente.';
+   errEl2.style.display = 'block';
+ }
 }
 
 function applySuggested(){
