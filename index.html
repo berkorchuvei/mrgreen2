@@ -548,6 +548,8 @@ async function doAuth(){
         setMsg('Já existe um trial recente ativo a partir desta conexão. Aguarde a expiração ou escolha um plano.','err');
       } else if (data.reason === 'expired') {
         setMsg('Seu plano expirou. Escolha um novo plano para continuar.','err');
+      } else if (data.reason === 'db_error') {
+        setMsg('Erro temporário ao consultar o servidor. Aguarde alguns segundos e tente de novo.','err');
       } else {
         setMsg('Não foi possível liberar o acesso. Tente novamente.','err');
       }

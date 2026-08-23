@@ -65,6 +65,15 @@ export default async function handler(req, res) {
       { headers }
     );
     const existing = await checkResp.json();
+
+    if (!checkResp.ok) {
+      /* Supabase retornou erro (ex: schema cache desatualizado após criar
+         coluna nova, credencial inválida, etc). Loga o detalhe completo
+         para aparecer nos Runtime Logs da Vercel. */
+      console.error('Supabase respondeu com erro na busca de usuário:', checkResp.status, JSON.stringify(existing));
+      return res.status(502).json({ ok: false, reason: 'db_error' });
+    }
+
     const user = Array.isArray(existing) && existing.length > 0 ? existing[0] : null;
 
     if (user) {
