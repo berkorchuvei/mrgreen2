@@ -344,7 +344,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
         <div class="mc-desc">Disponível fora do horário de bolsa, qualquer momento do dia.</div>
       </div>
     </div>
-    <div class="mkt-closed-note" id="mkt-closed-note">⏱ O mercado aberto (Forex) está fechado neste momento (fim de semana). Apenas o mercado OTC está disponível — ele funciona 24h, 7 dias por semana.</div>
+    <div class="mkt-closed-note" id="mkt-closed-note">⏱ O forex está fechado neste momento (fim de semana) — EUR/USD, GBP/USD, USD/CAD, EUR/JPY, EUR/CAD, GOLD e SPACEX ficam indisponíveis até reabrir. CARDANO e TRON continuam disponíveis normalmente (cripto funciona 24/7).</div>
   </div>
 
   <!-- 2. TIMEFRAME -->
@@ -470,8 +470,8 @@ var SK='mns_session', TK='mns_trial', TMS=24*3600000;
 })();
 
 /* ── HORÁRIO DE MERCADO ──────────────────────── */
-/* Forex "mercado aberto" funciona 24h, de domingo 22:00 UTC até sexta 22:00 UTC.
-   Fora dessa janela (fim de semana), só o mercado OTC está disponível. */
+/* Forex funciona 24h, de domingo 22:00 UTC até sexta 22:00 UTC.
+   Cripto funciona 24/7, sem restrição de horário. */
 function isForexOpen(){
   var now = new Date();
   var day = now.getUTCDay(); // 0=domingo ... 6=sábado
@@ -482,14 +482,37 @@ function isForexOpen(){
   return true;
 }
 
+/* Ativos do Mercado Aberto, com o tipo de horário de cada um:
+   'forex'  = segue o horário do Forex (isForexOpen)
+   'always' = cripto, funciona 24/7, sem restrição
+   Lista conferida diretamente na Safirion pelo dono da ferramenta. */
+var ATIVOS_ABERTO_META = [
+  { ativo:'EUR/USD', hours:'forex' },
+  { ativo:'EUR/JPY', hours:'forex' },
+  { ativo:'GBP/USD', hours:'forex' },
+  { ativo:'USD/CAD', hours:'forex' },
+  { ativo:'EUR/CAD', hours:'forex' },
+  { ativo:'GOLD',    hours:'forex' }, // commodity, tratado de forma conservadora com o mesmo horário do forex
+  { ativo:'SPACEX',  hours:'forex' }, // horário não 100% confirmado, tratado de forma conservadora
+  { ativo:'CARDANO', hours:'always' },
+  { ativo:'TRON',    hours:'always' }
+];
+
+function ativosAbertoDisponiveis(){
+  return ATIVOS_ABERTO_META.filter(function(a){
+    return a.hours==='always' || isForexOpen();
+  }).map(function(a){ return a.ativo; });
+}
+
 function updateMarketAvailability(){
-  var open = isForexOpen();
+  var disponiveis = ativosAbertoDisponiveis();
   var abertoCard = document.querySelector('.mkt-card[data-m="aberto"]');
   var otcCard = document.querySelector('.mkt-card[data-m="otc"]');
   var noteEl = document.getElementById('mkt-closed-note');
   if(!abertoCard) return;
 
-  if(!open){
+  if(disponiveis.length === 0){
+    /* só aconteceria se nenhum ativo (nem cripto) estivesse disponível — bloqueia por segurança */
     abertoCard.classList.add('disabled');
     abertoCard.setAttribute('aria-disabled','true');
     if(mkt==='aberto'){ mkt='otc'; if(otcCard) otcCard.classList.add('on'); abertoCard.classList.remove('on'); }
@@ -497,7 +520,8 @@ function updateMarketAvailability(){
   } else {
     abertoCard.classList.remove('disabled');
     abertoCard.removeAttribute('aria-disabled');
-    if(noteEl) noteEl.style.display='none';
+    /* mostra aviso informativo (sem bloquear) quando o forex está fechado mas cripto ainda disponível */
+    if(noteEl) noteEl.style.display = isForexOpen() ? 'none' : 'block';
   }
 }
 
@@ -509,7 +533,7 @@ function loadCfg(){
 /* ── TOOL STATE ──────────────────────────────── */
 var mkt='aberto', tf='M5', strat=loadCfg().strat || 'nogale';
 function setMkt(v){
-  if(v==='aberto' && !isForexOpen()) return; /* bloqueia seleção de mercado fechado */
+  if(v==='aberto' && ativosAbertoDisponiveis().length===0) return; /* bloqueia só se não sobrar nenhum ativo aberto */
   mkt=v;document.querySelectorAll('.mkt-card').forEach(function(c){c.classList.toggle('on',c.dataset.m===v);});
 }
 function setTF(v){tf=v;document.querySelectorAll('.tf-btn').forEach(function(b){b.classList.toggle('on',b.dataset.tf===v);});}
@@ -520,18 +544,7 @@ document.getElementById('btn-logout').onclick=function(){
 };
 
 /* ── SIGNAL GENERATOR (local, no API needed) ─ */
-var ATIVOS_ABERTO = [
-  'EUR/USD','GBP/USD','USD/JPY','AUD/USD','USD/CAD','USD/CHF','NZD/USD',
-  'EUR/GBP','EUR/JPY','GBP/JPY','EUR/CHF','AUD/JPY','CAD/JPY','AUD/CAD',
-  'NZD/JPY','GBP/CAD','EUR/AUD','GBP/AUD','EUR/CAD','CHF/JPY',
-  'BTC/USD','ETH/USD','LTC/USD','XRP/USD','SOL/USD','BNB/USD'
-];
-var ATIVOS_OTC = [
-  'EUR/USD-OTC','GBP/USD-OTC','USD/JPY-OTC','AUD/USD-OTC','USD/CAD-OTC','USD/CHF-OTC','NZD/USD-OTC',
-  'EUR/GBP-OTC','EUR/JPY-OTC','GBP/JPY-OTC','EUR/CHF-OTC','AUD/JPY-OTC','CAD/JPY-OTC','AUD/CAD-OTC',
-  'NZD/JPY-OTC','GBP/CAD-OTC','EUR/AUD-OTC','GBP/AUD-OTC',
-  'BTC/USD-OTC','ETH/USD-OTC','LTC/USD-OTC','XRP/USD-OTC','SOL/USD-OTC','BNB/USD-OTC','ADA/USD-OTC','DOGE/USD-OTC'
-];
+var ATIVOS_OTC = ['EUR/USD-OTC','GBP/USD-OTC','USD/JPY-OTC','AUD/USD-OTC','USD/CAD-OTC','EUR/GBP-OTC','GBP/JPY-OTC','EUR/JPY-OTC'];
 
 function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
@@ -553,7 +566,7 @@ updateStratIndicator();
 window.addEventListener('focus', updateStratIndicator); /* atualiza ao voltar da aba de Gerenciamento */
 
 function buildSignal(){
-  var ativos = mkt==='otc' ? ATIVOS_OTC : ATIVOS_ABERTO;
+  var ativos = mkt==='otc' ? ATIVOS_OTC : ativosAbertoDisponiveis();
   var ativo  = pick(ativos);
   var dir    = Math.random()>=0.5 ? 'COMPRA' : 'VENDA';
 
@@ -627,10 +640,14 @@ var FLAG_MAP = {
   AUD:'🇦🇺', CHF:'🇨🇭', NZD:'🇳🇿'
 };
 var CRYPTO_MAP = {
-  BTC:'₿', ETH:'Ξ', LTC:'Ł', XRP:'✕', SOL:'◎', BNB:'🔶', ADA:'₳', DOGE:'Ð'
+  BTC:'₿', ETH:'Ξ', LTC:'Ł', XRP:'✕', SOL:'◎', BNB:'🔶', ADA:'₳', DOGE:'Ð',
+  CARDANO:'₳', TRON:'🔺'
 };
+var SPECIAL_MAP = { GOLD:'🥇', SPACEX:'🚀' };
 function flagForAsset(ativo){
   var clean = ativo.replace('-OTC','').replace(' OTC','');
+  if(SPECIAL_MAP[clean]) return SPECIAL_MAP[clean];
+  if(CRYPTO_MAP[clean]) return CRYPTO_MAP[clean];
   var parts = clean.split('/');
   var base = parts[0], quote = parts[1] || parts[0];
   if(CRYPTO_MAP[base]) return CRYPTO_MAP[base]; // par de cripto → símbolo da moeda
