@@ -84,7 +84,7 @@ export default async function handler(req, res) {
   try {
     if (REVOKE_STATUSES.has(saleStatus)) {
       /* Reembolso / chargeback / cancelamento → revoga o acesso */
-      await fetch(`${SUPABASE_URL}/rest/v1/users?email=eq.${encodeURIComponent(email)}`, {
+      await fetch(`${SUPABASE_URL}/rest/v1/users?email=ilike.${encodeURIComponent(email)}`, {
         method: 'PATCH',
         headers: { ...headers, Prefer: 'return=minimal' },
         body: JSON.stringify({ plan: 'revoked', expires_at: new Date().toISOString() }),
@@ -106,13 +106,13 @@ export default async function handler(req, res) {
 
     /* Verifica se o usuário já existe */
     const checkResp = await fetch(
-      `${SUPABASE_URL}/rest/v1/users?email=eq.${encodeURIComponent(email)}&select=email`,
+      `${SUPABASE_URL}/rest/v1/users?email=ilike.${encodeURIComponent(email)}&select=email`,
       { headers }
     );
     const existing = await checkResp.json();
 
     if (Array.isArray(existing) && existing.length > 0) {
-      await fetch(`${SUPABASE_URL}/rest/v1/users?email=eq.${encodeURIComponent(email)}`, {
+      await fetch(`${SUPABASE_URL}/rest/v1/users?email=ilike.${encodeURIComponent(email)}`, {
         method: 'PATCH',
         headers: { ...headers, Prefer: 'return=minimal' },
         body: JSON.stringify({ plan: matched.key, expires_at: expiresAt, name }),

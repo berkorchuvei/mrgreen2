@@ -57,9 +57,11 @@ export default async function handler(req, res) {
   };
 
   try {
-    /* 1 — usuário já existe? */
+    /* 1 — usuário já existe? (ilike = não diferencia maiúsculas/minúsculas,
+       importante porque e-mails inseridos manualmente no passado podem ter
+       capitalização diferente da que o usuário digita agora) */
     const checkResp = await fetch(
-      `${SUPABASE_URL}/rest/v1/users?email=eq.${encodeURIComponent(email)}&select=*`,
+      `${SUPABASE_URL}/rest/v1/users?email=ilike.${encodeURIComponent(email)}&select=*`,
       { headers }
     );
     const existing = await checkResp.json();
