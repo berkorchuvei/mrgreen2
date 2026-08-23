@@ -500,10 +500,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--brd);padding:26px 
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
-var SB_URL = 'https://lgwqjhydasdnxxalpglm.supabase.co';
-var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxnd3FqaHlkYXNkbnh4YWxwZ2xtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NzkwNTUsImV4cCI6MjA5MzE1NTA1NX0.c5Pu51dQwWAwYOIJRQgJVG8MApBpmg_k_r8A9Ip_bRM';
 var SK  = 'mns_session';
 var TK  = 'mns_trial';
 var TMS = 24 * 3600000;
@@ -535,65 +532,47 @@ async function doAuth(){
   setLoading(true);
 
   try {
-    /* 1 — Check if user already exists in the users table */
-    var r = await fetch(
-      SB_URL + '/rest/v1/users?email=eq.' + encodeURIComponent(email) + '&select=*',
-      { headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY } }
-    );
+    var r = await fetch('/api/start-trial', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email })
+    });
     var data = await r.json();
-    var user = data && data.length > 0 ? data[0] : null;
 
-    if (user) {
-      /* Existing user — check access */
-      var active = user.plan === 'lifetime'
-        || ((user.plan === 'monthly' || user.plan === 'quarterly') && user.expires_at && new Date(user.expires_at) > new Date());
-      var inTrial = user.plan === 'trial';
-
-      if (!active && !inTrial) {
+    if (!data.ok) {
+      if (data.reason === 'ip_limit') {
+        setMsg('Já existe um trial recente ativo a partir desta conexão. Aguarde a expiração ou escolha um plano.','err');
+      } else if (data.reason === 'expired') {
         setMsg('Seu plano expirou. Escolha um novo plano para continuar.','err');
+      } else {
+        setMsg('Não foi possível liberar o acesso. Tente novamente.','err');
+      }
+      setLoading(false);
+      return;
+    }
+
+    var user = data.user;
+
+    /* Restore/inicia o timer de trial local */
+    if (user.plan === 'trial') {
+      var ts = user.trial_starts_at ? new Date(user.trial_starts_at).getTime() : Date.now();
+      var existing = null;
+      try { existing = JSON.parse(localStorage.getItem(TK)); } catch(e){}
+      if (!existing || existing.start !== ts) {
+        localStorage.setItem(TK, JSON.stringify({ start: ts }));
+      }
+      if ((ts + TMS) <= Date.now()) {
+        setMsg('Seu trial de 24h expirou. Escolha um plano para continuar.','err');
         setLoading(false);
+        setTimeout(function(){ window.location.href = 'paywall.html'; }, 1500);
         return;
       }
-
-      /* Restore trial timer */
-      if (inTrial) {
-        var existing = null;
-        try { existing = JSON.parse(localStorage.getItem(TK)); } catch(e){}
-        if (!existing) {
-          var ts = user.trial_starts_at ? new Date(user.trial_starts_at).getTime() : Date.now();
-          localStorage.setItem(TK, JSON.stringify({ start: ts }));
-        }
-        /* Check trial hasn't expired */
-        var t = JSON.parse(localStorage.getItem(TK));
-        if ((t.start + TMS) <= Date.now()) {
-          setMsg('Seu trial de 24h expirou. Escolha um plano para continuar.','err');
-          setLoading(false);
-          setTimeout(function(){ window.location.href = 'paywall.html'; }, 1500);
-          return;
-        }
-      }
-
-      localStorage.setItem(SK, JSON.stringify({
-        email: user.email, name: user.name || '', plan: user.plan,
-        expires_at: user.expires_at || null, checked: Date.now()
-      }));
-
-    } else {
-      /* New user — create trial */
-      var now = Date.now();
-      localStorage.setItem(TK, JSON.stringify({ start: now }));
-      localStorage.setItem(SK, JSON.stringify({ email: email, plan: 'trial', checked: now }));
-
-      /* Insert into Supabase (non-blocking) */
-      fetch(SB_URL + '/rest/v1/users', {
-        method: 'POST',
-        headers: {
-          'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY,
-          'Content-Type': 'application/json', 'Prefer': 'return=minimal'
-        },
-        body: JSON.stringify({ email: email, plan: 'trial', trial_starts_at: new Date(now).toISOString() })
-      }).catch(function(){});
     }
+
+    localStorage.setItem(SK, JSON.stringify({
+      email: user.email, name: user.name || '', plan: user.plan,
+      expires_at: user.expires_at || null, checked: Date.now()
+    }));
 
     setMsg('Acesso liberado! Redirecionando...','ok');
     setTimeout(function(){ window.location.href = 'app.html'; }, 700);
